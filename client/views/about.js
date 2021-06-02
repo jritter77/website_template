@@ -1,4 +1,4 @@
-function about() {
+function About() {
     const app = document.getElementById('app');
     
     app.innerHTML = `
@@ -8,4 +8,4 @@ function about() {
     `;
 }
 
-export {about}
+export {About}
