@@ -1,5 +1,5 @@
 import { Carousel } from "/website_template/client/components/carousel.js";
-import { Calendar, getNextMonth, getPrevMonth} from "/website_template/client/components/calendar.js";
+import { Calendar } from "/website_template/client/components/calendar.js";
 
 function Home() {
     const app = document.getElementById('app');
@@ -23,13 +23,16 @@ function Home() {
         </div>
     </div>
     <div class="row">
-        <col>${Calendar()}</col>
+        <div class="col" id="calendar"></div>
+        <div class="col text-center">
+            <h2>Quick Contact</h2>
+            <p>This would be a space to provide links to contact and other short contact info.</p>
+        </div>
     </div>
     `;
 
+    Calendar('calendar');
 
-    $('#prevMonth').click(getPrevMonth);
-    $('#nextMonth').click(getNextMonth);
 }
 
 export { Home }
