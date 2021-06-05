@@ -5,13 +5,16 @@ import {About} from "/website_template/client/views/about.js";
 import {Contact} from "/website_template/client/views/contact.js";
 import {Details} from "/website_template/client/views/details.js";
 import {Catalog} from "/website_template/client/views/catalog.js";
+import {Admin} from "/website_template/client/views/admin.js";
+
 
 const pages = {
     home: Home,
     about: About,
     contact: Contact,
     details: Details,
-    catalog: Catalog
+    catalog: Catalog,
+    admin: Admin
 }
 
 function getPageFromURL() {

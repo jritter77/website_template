@@ -10,7 +10,6 @@ async function Details() {
 
     const article = JSON.parse(await post('http://localhost/website_template/server/getRecord.php', articleId));
     
-    console.log(article);
 
     app.innerHTML = `
     <div class="row">
