@@ -12,7 +12,7 @@ function Home() {
             ${Carousel()}
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="calendarAndNews">
         <div 
         class="col text-center border border-primary rounded" 
         style="margin:5vw; padding-top:2vw;"
@@ -21,9 +21,8 @@ function Home() {
             <p>This would be a space to provide updates to the public.</p>
             
         </div>
-        <div class="col" id="calendar" style="margin:5vw;"></div>
     </div>
-    <div class="row">
+    <div class="row" id="aboutAndContact">
         <div 
         class="col text-center border border-primary rounded" 
         style="margin:5vw; padding-top:2vw;"
@@ -43,7 +42,7 @@ function Home() {
     </div>
     `;
 
-    Calendar('calendar');
+    Calendar('calendarAndNews');
 
 }
 

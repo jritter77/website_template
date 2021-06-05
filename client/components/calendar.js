@@ -9,13 +9,17 @@ const c_date = d.getDate();
 const c_day = d.getDay();
 
 
-const testEvents = [{name: 'event1', month: 5, date: 21}, {name: 'event_2', month: 6, date: 15}];
+const testEvents = [{name: 'event1', year: 2021, month: 5, date: 21}, {name: 'event_2', year: 2021, month: 6, date: 15}];
 
 
+
+// Sets all events for the current calendar
 function setEvents(events) {
-    let cur = months.indexOf($('#month').html());
+    let curMonth = months.indexOf($('#month').html());
+    let curYear = parseInt($('#year').html());
 
-    events = events.filter(e => (e.month === cur));
+
+    events = events.filter(e => (e.month === curMonth && e.year === curYear));
 
     for (let ev of events) {
 
@@ -33,6 +37,7 @@ function setEvents(events) {
         }) 
     }
 }
+
 
 // returns the date of the top left square for any given date and day
 function getStartDate(date, day) {
@@ -52,12 +57,20 @@ function getStartDate(date, day) {
 function printDays(i, month) {
     const prevMonth = (month-1 < 0) ? 11 : month-1;
     const nextMonth = (month+1 > 11) ? 0 : month+1;
+    const year = parseInt($('#year').html());
+
+    if (!(year % 4)) {
+        dCount[1] = 29;
+    }
+    else {
+        dCount[1] = 28;
+    }
 
 
     if (i < 1) {
         return `<b 
                 class='day text-muted'
-                style="font-size:1.5vw;background-color: ${(i === c_date && prevMonth === c_month) ? 'aqua' : ''}"
+                style="font-size:1.5vw;background-color: ${(i === c_date && prevMonth === c_month && year === c_year) ? 'aqua' : ''}"
                 >
                     ${dCount[((month-1 < 0) ? 11 : month-1)] + i}
                 </b>`;
@@ -65,7 +78,7 @@ function printDays(i, month) {
     else if (i > dCount[month]) {
         return `<b 
                 class='day text-muted'
-                style="font-size:1.5vw;background-color: ${((i - dCount[month]) === c_date && nextMonth === c_month) ? 'aqua' : ''}"
+                style="font-size:1.5vw;background-color: ${((i - dCount[month]) === c_date && nextMonth === c_month && year === c_year) ? 'aqua' : ''}"
                 >
                     ${i - dCount[month]}
                 </b>`;
@@ -73,7 +86,7 @@ function printDays(i, month) {
     else {
         return `<b 
                 class='day'
-                style="font-size:1.5vw;background-color: ${(i === c_date && month === c_month) ? 'aqua' : ''}"
+                style="font-size:1.5vw;background-color: ${(i === c_date && month === c_month && year === c_year) ? 'aqua' : ''}"
                 >
                     ${i}
                 </b>`;
@@ -93,7 +106,7 @@ function constructDays() {
         for (let c = 0; c < 7; c++) {
             html += `
                 <div class="col">
-                    <div class='dayContainer' style="width:100%;height:0;padding-bottom:100%;border:1px solid black;">
+                    <div class='dayContainer text-left' style="width:100%;height:0;padding-bottom:100%;border:1px solid white;">
                     </div>
                 </div>`
                 i++;
@@ -190,32 +203,33 @@ function getPrevMonth() {
 
 // Sets the innerHTML of the par element
 function Calendar(par) {
-    $(`#${par}`).html(  `
-        
+    $(`#${par}`).append(  `
+        <div class="col border border-primary rounded text-center" style="margin:5vw;">
             <div class="row">
-                <div class="col text-right">
+                <div class="col">
                     <button id="prevMonth" class="btn" style="font-size:1.5vw;"><b>&lt</b></button>
                 </div>
-                <div class="col text-center">
-                    <h4 id="year" style="font-size:1.5vw;">${c_year}</h4>
+                <div class="col">
+                    <h4 id="year" style="font-size:2vw;">${c_year}</h4>
                 </div>
-                <div class="col text-center">
-                    <h4 id="month" style="font-size:1.5vw;"></h4>
+                <div class="col">
+                    <h4 id="month" style="font-size:2vw;"></h4>
                 </div>
-                 <div class="col text-left">
+                 <div class="col">
                     <button id="nextMonth" class="btn" style="font-size:1.5vw;"><b>&gt</b></button>
                 </div>
             </div>
             <div class="row no-gutters" id="days">
-                <div class="col text-center" ><h6 style="font-size:1.5vw;">Sun</h6></div>
-                <div class="col text-center" ><h6 style="font-size:1.5vw;">Mon</h6></div>
-                <div class="col text-center" ><h6 style="font-size:1.5vw;">Tues</h6></div>
-                <div class="col text-center" ><h6 style="font-size:1.5vw;">Wed</h6></div>
-                <div class="col text-center" ><h6 style="font-size:1.5vw;">Thu</h6></div>
-                <div class="col text-center" ><h6 style="font-size:1.5vw;">Fri</h6></div>
-                <div class="col text-center" ><h6 style="font-size:1.5vw;">Sat</h6></div>
+                <div class="col" ><h6 style="font-size:1.5vw;">Sun</h6></div>
+                <div class="col" ><h6 style="font-size:1.5vw;">Mon</h6></div>
+                <div class="col" ><h6 style="font-size:1.5vw;">Tues</h6></div>
+                <div class="col" ><h6 style="font-size:1.5vw;">Wed</h6></div>
+                <div class="col" ><h6 style="font-size:1.5vw;">Thu</h6></div>
+                <div class="col" ><h6 style="font-size:1.5vw;">Fri</h6></div>
+                <div class="col" ><h6 style="font-size:1.5vw;">Sat</h6></div>
             </div>
             ${constructDays()}
+        </div>
     `)
 
     getCurrentMonth();
