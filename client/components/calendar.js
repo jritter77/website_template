@@ -9,6 +9,31 @@ const c_date = d.getDate();
 const c_day = d.getDay();
 
 
+const testEvents = [{name: 'event1', month: 5, date: 21}, {name: 'event_2', month: 6, date: 15}];
+
+
+function setEvents(events) {
+    let cur = months.indexOf($('#month').html());
+
+    events = events.filter(e => (e.month === cur));
+
+    for (let ev of events) {
+
+        // set the current event
+        $('.day').each(function(i, el) {
+            let date = parseInt(el.innerHTML);
+            
+            if (ev.date === date) {
+                let p = document.createElement("p");
+                p.innerHTML = ev.name;
+                p.style.fontSize = '1.1vw';
+                el.append(p);
+                return false;
+            }
+        }) 
+    }
+}
+
 // returns the date of the top left square for any given date and day
 function getStartDate(date, day) {
     let result = (date % 7) - day;
@@ -32,7 +57,7 @@ function printDays(i, month) {
     if (i < 1) {
         return `<b 
                 class='day text-muted'
-                style="background-color: ${(i === c_date && prevMonth === c_month) ? 'aqua' : ''}"
+                style="font-size:1.5vw;background-color: ${(i === c_date && prevMonth === c_month) ? 'aqua' : ''}"
                 >
                     ${dCount[((month-1 < 0) ? 11 : month-1)] + i}
                 </b>`;
@@ -40,7 +65,7 @@ function printDays(i, month) {
     else if (i > dCount[month]) {
         return `<b 
                 class='day text-muted'
-                style="background-color: ${((i - dCount[month]) === c_date && nextMonth === c_month) ? 'aqua' : ''}"
+                style="font-size:1.5vw;background-color: ${((i - dCount[month]) === c_date && nextMonth === c_month) ? 'aqua' : ''}"
                 >
                     ${i - dCount[month]}
                 </b>`;
@@ -48,7 +73,7 @@ function printDays(i, month) {
     else {
         return `<b 
                 class='day'
-                style="background-color: ${(i === c_date && month === c_month) ? 'aqua' : ''}"
+                style="font-size:1.5vw;background-color: ${(i === c_date && month === c_month) ? 'aqua' : ''}"
                 >
                     ${i}
                 </b>`;
@@ -92,6 +117,8 @@ function getCurrentMonth() {
         e.innerHTML = printDays(start, c_month);
         start++;
     })
+
+    setEvents(testEvents);
 }
 
 
@@ -120,6 +147,9 @@ function getNextMonth() {
         e.innerHTML = printDays(start, month);
         start++;
     })
+
+    setEvents(testEvents);
+
 }
 
 
@@ -151,6 +181,9 @@ function getPrevMonth() {
         e.innerHTML = printDays(start, month);
         start++;
     })
+    
+    setEvents(testEvents);
+    
 }
 
 
@@ -158,32 +191,31 @@ function getPrevMonth() {
 // Sets the innerHTML of the par element
 function Calendar(par) {
     $(`#${par}`).html(  `
-        <div class="col">
-            <div class="row">
-                <div class="col text-center"><h4 id="year">${c_year}</h4></div>
-            </div>
+        
             <div class="row">
                 <div class="col text-right">
-                    <button id="prevMonth" class="btn"><b>&lt</b></button>
+                    <button id="prevMonth" class="btn" style="font-size:1.5vw;"><b>&lt</b></button>
                 </div>
                 <div class="col text-center">
-                    <h3 id="month"></h3>
+                    <h4 id="year" style="font-size:1.5vw;">${c_year}</h4>
+                </div>
+                <div class="col text-center">
+                    <h4 id="month" style="font-size:1.5vw;"></h4>
                 </div>
                  <div class="col text-left">
-                    <button id="nextMonth" class="btn"><b>&gt</b></button>
+                    <button id="nextMonth" class="btn" style="font-size:1.5vw;"><b>&gt</b></button>
                 </div>
             </div>
             <div class="row no-gutters" id="days">
-                <div class="col text-center"><h6>Sun</h6></div>
-                <div class="col text-center"><h6>Mon</h6></div>
-                <div class="col text-center"><h6>Tues</h6></div>
-                <div class="col text-center"><h6>Wed</h6></div>
-                <div class="col text-center"><h6>Thu</h6></div>
-                <div class="col text-center"><h6>Fri</h6></div>
-                <div class="col text-center"><h6>Sat</h6></div>
+                <div class="col text-center" ><h6 style="font-size:1.5vw;">Sun</h6></div>
+                <div class="col text-center" ><h6 style="font-size:1.5vw;">Mon</h6></div>
+                <div class="col text-center" ><h6 style="font-size:1.5vw;">Tues</h6></div>
+                <div class="col text-center" ><h6 style="font-size:1.5vw;">Wed</h6></div>
+                <div class="col text-center" ><h6 style="font-size:1.5vw;">Thu</h6></div>
+                <div class="col text-center" ><h6 style="font-size:1.5vw;">Fri</h6></div>
+                <div class="col text-center" ><h6 style="font-size:1.5vw;">Sat</h6></div>
             </div>
             ${constructDays()}
-        </div>
     `)
 
     getCurrentMonth();

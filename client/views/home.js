@@ -13,20 +13,32 @@ function Home() {
         </div>
     </div>
     <div class="row">
-        <div class="col text-center">
+        <div 
+        class="col text-center border border-primary rounded" 
+        style="margin:5vw; padding-top:2vw;"
+        >
+            <h2>News Feed</h2>
+            <p>This would be a space to provide updates to the public.</p>
+            
+        </div>
+        <div class="col" id="calendar" style="margin:5vw;"></div>
+    </div>
+    <div class="row">
+        <div 
+        class="col text-center border border-primary rounded" 
+        style="margin:5vw; padding-top:2vw;"
+        >
             <h2>Small About Blurb</h2>
             <p>This would be a space to say a sentance or two about the website.</p>
         </div>
-        <div class="col text-center">
-            <h2>News Feed</h2>
-            <p>This would be a space to provide updates to the public.</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col" id="calendar"></div>
-        <div class="col text-center">
+        <div 
+        class="col text-center border border-primary rounded" 
+        style="margin:5vw; padding-top:2vw;"
+        >
             <h2>Quick Contact</h2>
             <p>This would be a space to provide links to contact and other short contact info.</p>
+            <p style="margin-top:20%;">Phone: 555-555-5555</p>
+            <p>Email: websiteName@gmail.com</p>
         </div>
     </div>
     `;
