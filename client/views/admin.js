@@ -1,4 +1,4 @@
-import { Login } from "/website_template/client/components/login.js";
+import { Login } from "../components/login.js";
 
 function Admin() {
     const app = document.getElementById('app');

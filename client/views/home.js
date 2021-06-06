@@ -1,5 +1,5 @@
-import { Carousel } from "/website_template/client/components/carousel.js";
-import { Calendar } from "/website_template/client/components/calendar.js";
+import { Carousel } from "../components/carousel.js";
+import { Calendar } from "../components/calendar.js";
 
 function Home() {
     const app = document.getElementById('app');

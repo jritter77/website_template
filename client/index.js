@@ -1,11 +1,10 @@
-import {get, post} from "/website_template/client/webRequest.js";
 
-import {Home} from "/website_template/client/views/home.js";
-import {About} from "/website_template/client/views/about.js";
-import {Contact} from "/website_template/client/views/contact.js";
-import {Details} from "/website_template/client/views/details.js";
-import {Catalog} from "/website_template/client/views/catalog.js";
-import {Admin} from "/website_template/client/views/admin.js";
+import {Home} from "./views/home.js";
+import {About} from "./views/about.js";
+import {Contact} from "./views/contact.js";
+import {Details} from "./views/details.js";
+import {Catalog} from "./views/catalog.js";
+import {Admin} from "./views/admin.js";
 
 
 const pages = {
