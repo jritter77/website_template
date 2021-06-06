@@ -53,24 +53,29 @@ function getStartDate(date, day) {
 }
 
 
-// Prints the actual dates to the calendar
-function printDays(i, month) {
-    const prevMonth = (month-1 < 0) ? 11 : month-1;
-    const nextMonth = (month+1 > 11) ? 0 : month+1;
-    const year = parseInt($('#year').html());
-
+function checkLeapYear(year) {
     if (!(year % 4)) {
         dCount[1] = 29;
     }
     else {
         dCount[1] = 28;
     }
+}
 
+
+// Prints the actual dates to the calendar
+function printDays(i, month) {
+    const prevMonth = (month-1 < 0) ? 11 : month-1;
+    const nextMonth = (month+1 > 11) ? 0 : month+1;
+    const year = parseInt($('#year').html());
+
+    
+    checkLeapYear();
 
     if (i < 1) {
         return `<b 
                 class='day text-muted'
-                style="font-size:1.5vw;background-color: ${(i === c_date && prevMonth === c_month && year === c_year) ? 'aqua' : ''}"
+                style="font-size:1.5vw;background-color: ${((dCount[prevMonth] + i) === c_date && prevMonth === c_month && year === c_year) ? 'aqua' : ''}"
                 >
                     ${dCount[((month-1 < 0) ? 11 : month-1)] + i}
                 </b>`;
@@ -204,7 +209,7 @@ function getPrevMonth() {
 // Sets the innerHTML of the par element
 function Calendar(par) {
     $(`#${par}`).append(  `
-        <div class="col border border-primary rounded text-center" style="margin:5vw;">
+        <div class="col border border-primary rounded text-center" style="margin:5vw;min-width:30px;">
             <div class="row">
                 <div class="col">
                     <button id="prevMonth" class="btn" style="font-size:1.5vw;"><b>&lt</b></button>
