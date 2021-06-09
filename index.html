@@ -22,21 +22,44 @@
 
 </head>
 
-<body>
+<body style='min-height: 100vh;position: relative;margin: 0;padding-bottom: 100px;'>
     <header>
-        <nav class="navbar navbar-default" id="nav">
+        <nav class="navbar navbar-dark bg-dark" id="nav">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#home">Website Template</a>
+                <div class='row'>
+                    <div class='col'>
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#home">Website Template</a>
+                        </div>
+                    </div>
                 </div>
-                <a href="#catalog">Catalog</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
+                <div class='row'>
+                    <div class='col'><a style='color:white;' href="#catalog">Catalog</a></div>
+                    <div class='col'><a style='color:white;' href="#about">About</a></div>
+                    <div class='col'><a style='color:white;' href="#contact">Contact</a></div>
+                </div>
             </div>
         </nav>
     </header>
+
     <div class='container-fluid' id="app"></div>
     <script type='module' src='client/index.js'></script>
+
+    <footer class='container-fluid bg-dark' style='position:absolute;bottom:0;'>
+        <div class='row'>
+            <div class='col text-center'>
+                <p style='color:white;'>Contact</p>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col text-right'>
+                <p style='color:white;'>555-555-5555</p>
+            </div>
+            <div class='col text-left'>
+                <p style='color:white;'>websiteName@gmail.com</p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

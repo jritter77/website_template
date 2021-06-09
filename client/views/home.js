@@ -7,14 +7,14 @@ function Home() {
     
 
     app.innerHTML = `
-    <div class="row">
-        <div class="col">
+    <div class="row no-gutters"  style="margin-top:5vw;">
+        <div class="col-md">
             ${Carousel()}
         </div>
     </div>
     <div class="row" id="calendarAndNews">
         <div 
-        class="col text-center border border-primary rounded" 
+        class="col-md text-center border border-primary rounded" 
         style="margin:5vw; padding-top:2vw;"
         >
             <h2>News Feed</h2>
@@ -24,20 +24,11 @@ function Home() {
     </div>
     <div class="row" id="aboutAndContact">
         <div 
-        class="col text-center border border-primary rounded" 
+        class="col-md text-center border border-primary rounded" 
         style="margin:5vw; padding-top:2vw;"
         >
             <h2>Small About Blurb</h2>
-            <p>This would be a space to say a sentance or two about the website.</p>
-        </div>
-        <div 
-        class="col text-center border border-primary rounded" 
-        style="margin:5vw; padding-top:2vw;"
-        >
-            <h2>Quick Contact</h2>
-            <p>This would be a space to provide links to contact and other short contact info.</p>
-            <p style="margin-top:20%;">Phone: 555-555-5555</p>
-            <p>Email: websiteName@gmail.com</p>
+            <p>This would be a space to say a sentence or two about the website.</p>
         </div>
     </div>
     `;

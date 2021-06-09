@@ -1,7 +1,7 @@
 import {Article} from "../components/article.js";
 import {get, post} from "../webRequest.js";
 
-async function Catalog() {
+async function ManageArticles() {
 
     // DEFINE ALL FUNCTIONS AND VARIABLES
 
@@ -49,4 +49,4 @@ async function Catalog() {
 }
 
 
-export {Catalog}
+export { ManageArticles }

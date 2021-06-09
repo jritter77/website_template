@@ -30,7 +30,7 @@ function setEvents(events) {
             if (ev.date === date) {
                 let p = document.createElement("p");
                 p.innerHTML = ev.name;
-                p.style.fontSize = '1.1vw';
+                p.style.fontSize = '1.5vw';
                 el.append(p);
                 return false;
             }
@@ -75,7 +75,7 @@ function printDays(i, month) {
     if (i < 1) {
         return `<b 
                 class='day text-muted'
-                style="font-size:1.5vw;background-color: ${((dCount[prevMonth] + i) === c_date && prevMonth === c_month && year === c_year) ? 'aqua' : ''}"
+                style="background-color: ${((dCount[prevMonth] + i) === c_date && prevMonth === c_month && year === c_year) ? 'aqua' : ''}"
                 >
                     ${dCount[((month-1 < 0) ? 11 : month-1)] + i}
                 </b>`;
@@ -83,7 +83,7 @@ function printDays(i, month) {
     else if (i > dCount[month]) {
         return `<b 
                 class='day text-muted'
-                style="font-size:1.5vw;background-color: ${((i - dCount[month]) === c_date && nextMonth === c_month && year === c_year) ? 'aqua' : ''}"
+                style="background-color: ${((i - dCount[month]) === c_date && nextMonth === c_month && year === c_year) ? 'aqua' : ''}"
                 >
                     ${i - dCount[month]}
                 </b>`;
@@ -91,7 +91,7 @@ function printDays(i, month) {
     else {
         return `<b 
                 class='day'
-                style="font-size:1.5vw;background-color: ${(i === c_date && month === c_month && year === c_year) ? 'aqua' : ''}"
+                style="background-color: ${(i === c_date && month === c_month && year === c_year) ? 'aqua' : ''}"
                 >
                     ${i}
                 </b>`;
@@ -209,29 +209,29 @@ function getPrevMonth() {
 // Sets the innerHTML of the par element
 function Calendar(par) {
     $(`#${par}`).append(  `
-        <div class="col border border-primary rounded text-center" style="margin:5vw;min-width:30px;">
-            <div class="row">
+        <div class="col-md border border-primary rounded text-center xs-col-12 md-col-6" style="margin:5vw;min-width:30px;">
+            <div class="row no-gutters">
                 <div class="col">
-                    <button id="prevMonth" class="btn" style="font-size:1.5vw;"><b>&lt</b></button>
+                    <button id="prevMonth" class="btn" ><b>&lt</b></button>
                 </div>
                 <div class="col">
-                    <h4 id="year" style="font-size:2vw;">${c_year}</h4>
+                    <h4 id="year" >${c_year}</h4>
                 </div>
                 <div class="col">
-                    <h4 id="month" style="font-size:2vw;"></h4>
+                    <h4 id="month" ></h4>
                 </div>
                  <div class="col">
-                    <button id="nextMonth" class="btn" style="font-size:1.5vw;"><b>&gt</b></button>
+                    <button id="nextMonth" class="btn" ><b>&gt</b></button>
                 </div>
             </div>
             <div class="row no-gutters" id="days">
-                <div class="col" ><h6 style="font-size:1.5vw;">Sun</h6></div>
-                <div class="col" ><h6 style="font-size:1.5vw;">Mon</h6></div>
-                <div class="col" ><h6 style="font-size:1.5vw;">Tues</h6></div>
-                <div class="col" ><h6 style="font-size:1.5vw;">Wed</h6></div>
-                <div class="col" ><h6 style="font-size:1.5vw;">Thu</h6></div>
-                <div class="col" ><h6 style="font-size:1.5vw;">Fri</h6></div>
-                <div class="col" ><h6 style="font-size:1.5vw;">Sat</h6></div>
+                <div class="col" ><h6 >Sun</h6></div>
+                <div class="col" ><h6 >Mon</h6></div>
+                <div class="col" ><h6 >Tues</h6></div>
+                <div class="col" ><h6 >Wed</h6></div>
+                <div class="col" ><h6 >Thu</h6></div>
+                <div class="col" ><h6 >Fri</h6></div>
+                <div class="col" ><h6 >Sat</h6></div>
             </div>
             ${constructDays()}
         </div>
