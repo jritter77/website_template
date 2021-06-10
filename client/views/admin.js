@@ -18,7 +18,7 @@ function Admin() {
                 >
                     <h2 class='text-center'>Content Tools</h2>
                     <ul style='margin:2vw;'>
-                        <li><a href='#'>Manage Articles</a></li>
+                        <li><a href='#catalog'>Manage Articles</a></li>
                         <li><a href='#'>Create News Post</a></li>
                         <li><a href='#'>Manage Events</a></li>
                     </ul>

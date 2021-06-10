@@ -30,7 +30,7 @@ function setEvents(events) {
             if (ev.date === date) {
                 let p = document.createElement("p");
                 p.innerHTML = ev.name;
-                p.style.fontSize = '1.5vw';
+                p.style.fontSize = '.8em';
                 el.append(p);
                 return false;
             }

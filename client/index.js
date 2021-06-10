@@ -7,6 +7,7 @@ import {Catalog} from "./views/catalog.js";
 import {Admin} from "./views/admin.js";
 
 
+
 const pages = {
     home: Home,
     about: About,
