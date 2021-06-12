@@ -2,6 +2,10 @@ import {Article} from "../components/article.js";
 import {Modal} from "../components/modal.js";
 import {get, post} from "../webRequest.js";
 
+let articles;
+let searchTerm = "";
+let activeFilters;
+
 
 
 async function addArticle() {
@@ -26,10 +30,50 @@ async function addArticle() {
 }
 
 
+function filterArticles(a) {
+    const title = a.title.search(searchTerm) > -1;
+    const desc = a.description.search(searchTerm) > -1;
+    const tags = (a.tags) ? a.tags.split(',') : [];
+    
+    if (activeFilters.length > 0) {
+        for (let af of activeFilters) {
+            if (tags.indexOf(af) > -1) {
+                if (title || desc) {
+                    return true;
+                } 
+            }
+        }
+    }
+    else {
+        if (title || desc) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+
+function handleSearch() {
+    searchTerm = $('#search').children(':first').val();
+    searchTerm = (searchTerm) ? searchTerm : "";
+
+    activeFilters = [];
+    $('.articleFilter').each((i, e) => {
+        if (e.checked) {
+            activeFilters.push(e.value);
+        }
+    });
+    
+    $('#articles').html(articles.filter(filterArticles).map(Article));
+    
+}
+
+
 async function Catalog() {
 
     // GET articles from db
-    const articles = JSON.parse(await get('/website_template/server/getAllRecords.php'));
+    articles = JSON.parse(await get('/website_template/server/getAllRecords.php'));
 
     // WRITE THE HTML TO THE APP CONTAINER  
     const app = document.getElementById('app');
@@ -37,7 +81,7 @@ async function Catalog() {
     app.innerHTML = `
     <div class='row no-gutters'>
         <div class='col'>
-            <div class='row d-flex justify-content-center'>
+            <div id='articles' class='row d-flex justify-content-center'>
                 ${articles.map(Article)}
             </div>
         </div>
@@ -46,34 +90,20 @@ async function Catalog() {
     `;
 
 
-    const modalBody = `
-        <form id='login'>
-            <div class='form-group'>
-                <label for='newArticleTitle'>Article Title</label>
-                <input type='text' class='form-control' id='newArticleTitle' placeholder='Title'>
-            </div>
-            <div class='form-group'>
-                <label for='newArticleDesc'>Description</label>
-                <input type='text' class='form-control' id='newArticleDesc' placeholder='Description of article.'>
-            </div>
-            <div class='form-group'>
-                <label for='newArticlePrice'>Price</label>
-                <input type='text' class='form-control' id='newArticlePrice' placeholder='0.00'>
-            </div>
-        </form>  
-    `;
+    
 
-    Modal('New Article', modalBody, addArticle);
+    Modal('New Article', newArticleModal, addArticle);
+    $('#search').on('submit', handleSearch)
 }
 
 
 // Catalog Control Component
 const catalogCtl = () => `
     <div class='col-xs-1' style='margin-top:5vw;margin-right:3vw;'>
-        <form class='border border-primary rounded'>
+        <div class='border border-primary rounded'>
             ${filters()}
             ${search()}
-        </form>
+        </div>
         ${(sessionStorage.getItem('token')) ? adminTools() : ""}
     </div>
   `;
@@ -82,24 +112,25 @@ const catalogCtl = () => `
 
 // Search Component
 const search = () => `
-    <div style='margin:1vw;margin-top:3vw;'>
+    <form id='search' style='margin:1vw;margin-top:3vw;'>
         <input class='form-control' placeholder='Search'></input>
         <button class='btn btn-primary' type='submit' style='margin-top:1vw'>Submit</button>
-    </div>
+    </form>
     `;
 
 
 
 // Filter Component
 const filters = () => {
+    const terms = ['test', 'jea', 'stuff'];
 
     let html = ``;
-    for (let i=0; i<4; i++) {
+    for (let t of terms) {
         html += `
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="filter_${i}">
-                <label class="form-check-label" for="filter_${i}">
-                    Filter ${i}
+                <input class="form-check-input articleFilter" type="checkbox" value="${t}" id="filter_${t}">
+                <label class="form-check-label" for="filter_${t}">
+                    ${t}
                 </label>
             </div>`
     }
@@ -120,6 +151,24 @@ const adminTools = () => {
     `;
 }
 
+
+// Body for New Article Modal component
+const newArticleModal = `
+        <form id='login'>
+            <div class='form-group'>
+                <label for='newArticleTitle'>Article Title</label>
+                <input type='text' class='form-control' id='newArticleTitle' placeholder='Title'>
+            </div>
+            <div class='form-group'>
+                <label for='newArticleDesc'>Description</label>
+                <input type='text' class='form-control' id='newArticleDesc' placeholder='Description of article.'>
+            </div>
+            <div class='form-group'>
+                <label for='newArticlePrice'>Price</label>
+                <input type='text' class='form-control' id='newArticlePrice' placeholder='0.00'>
+            </div>
+        </form>  
+    `;
 
 
 

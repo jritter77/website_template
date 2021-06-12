@@ -4,10 +4,8 @@ function handleSubmission() {
     const user = $('#user').val();
     const pass = $('#pass').val();
 
-    console.log(user, pass);
 
     if (user === 'admin' && pass === 'root') {
-        console.log('success');
         sessionStorage.setItem('token', 'token123');
         Admin();
     } else {
