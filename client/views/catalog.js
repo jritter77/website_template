@@ -2,13 +2,14 @@ import {Article} from "../components/article.js";
 import {Modal} from "../components/modal.js";
 import {get, post} from "../webRequest.js";
 
+// Declare all global variables for the page
 let articles;
 let searchTerm = "";
 let activeFilters;
 let activePriceRange;
 
 
-
+// Add Article function adds new article to database
 async function addArticle() {
     const newTitle = $('#newArticleTitle').val();
     const newDesc =  $('#newArticleDesc').val();
@@ -30,6 +31,8 @@ async function addArticle() {
     }
 }
 
+
+// Checks for the current searchTerm in the title and description of given article
 function checkSearchTerm(a) {
     const title = a.title.search(searchTerm) > -1;
     const desc = a.description.search(searchTerm) > -1;
@@ -39,6 +42,8 @@ function checkSearchTerm(a) {
     return false;
 }
 
+
+// Collects which filters are currently active and stores the results in activeFilters
 function getActiveFilters() {
     activeFilters = [];
     $('.articleFilter').each((i, e) => {
@@ -49,6 +54,7 @@ function getActiveFilters() {
 }
 
 
+// sets the current price range to the selected option
 function getPriceRange() {
     $('.articlePriceRange').each((i, e) => {
         if (e.checked) {
@@ -65,13 +71,14 @@ function getPriceRange() {
     });
 }
 
+
+// Filter function used to filter articles when searching
 function filterArticles(a) {
-    const tags = (a.tags) ? a.tags.split(',') : [];
+    const tags = a.tags;
     const min = parseInt(activePriceRange[0]);
     const max = (activePriceRange[1] === Infinity) ? Infinity : parseInt(activePriceRange[1]);
     const price = parseInt(a.price);
 
-    console.log(min, max);
     
     if (price >= min && price < max) {
         if (activeFilters.length > 0) {
@@ -90,7 +97,7 @@ function filterArticles(a) {
     return false;
 }
 
-
+// Filters the articles according to all search variables
 function handleSearch() {
     searchTerm = $('#search').children(':first').val();
     searchTerm = (searchTerm) ? searchTerm : "";
@@ -103,6 +110,7 @@ function handleSearch() {
 }
 
 
+// This is the main Page component to be displayed, houses all other components.
 async function Catalog() {
 
     // GET articles from db
@@ -179,6 +187,7 @@ const filters = () => {
 }
 
 
+// Price Range component
 const priceRange = () => {
     const ranges = ['any', '0-50', '50-100', '100-*'];
 
@@ -198,6 +207,7 @@ const priceRange = () => {
 }
 
 
+// Admin Tools component
 const adminTools = () => {
     return `
         <div class='border border-primary rounded' style='margin-top:1vw'>
@@ -208,6 +218,7 @@ const adminTools = () => {
         </div>
     `;
 }
+
 
 
 // Body for New Article Modal component
