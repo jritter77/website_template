@@ -5,6 +5,7 @@ import {get, post} from "../webRequest.js";
 let articles;
 let searchTerm = "";
 let activeFilters;
+let activePriceRange;
 
 
 
@@ -29,26 +30,62 @@ async function addArticle() {
     }
 }
 
-
-function filterArticles(a) {
+function checkSearchTerm(a) {
     const title = a.title.search(searchTerm) > -1;
     const desc = a.description.search(searchTerm) > -1;
+    if (title || desc) {
+        return true;
+    }
+    return false;
+}
+
+function getActiveFilters() {
+    activeFilters = [];
+    $('.articleFilter').each((i, e) => {
+        if (e.checked) {
+            activeFilters.push(e.value);
+        }
+    });
+}
+
+
+function getPriceRange() {
+    $('.articlePriceRange').each((i, e) => {
+        if (e.checked) {
+            if (e.value === 'any') {
+                activePriceRange = [0, Infinity];
+                return false;
+            }
+
+            const range = e.value.split('-');
+            range[1] = (range[1] === '*') ? Infinity : range[1];
+            activePriceRange = range;
+            return false;
+        }
+    });
+}
+
+function filterArticles(a) {
     const tags = (a.tags) ? a.tags.split(',') : [];
+    const min = parseInt(activePriceRange[0]);
+    const max = (activePriceRange[1] === Infinity) ? Infinity : parseInt(activePriceRange[1]);
+    const price = parseInt(a.price);
+
+    console.log(min, max);
     
-    if (activeFilters.length > 0) {
-        for (let af of activeFilters) {
-            if (tags.indexOf(af) > -1) {
-                if (title || desc) {
-                    return true;
-                } 
+    if (price >= min && price < max) {
+        if (activeFilters.length > 0) {
+            for (let af of activeFilters) {
+                if (tags.indexOf(af) > -1) {
+                     return checkSearchTerm(a);
+                }
             }
         }
-    }
-    else {
-        if (title || desc) {
-            return true;
+        else {
+            return checkSearchTerm(a);
         }
     }
+    
     
     return false;
 }
@@ -58,12 +95,8 @@ function handleSearch() {
     searchTerm = $('#search').children(':first').val();
     searchTerm = (searchTerm) ? searchTerm : "";
 
-    activeFilters = [];
-    $('.articleFilter').each((i, e) => {
-        if (e.checked) {
-            activeFilters.push(e.value);
-        }
-    });
+    getActiveFilters();
+    getPriceRange();
     
     $('#articles').html(articles.filter(filterArticles).map(Article));
     
@@ -101,8 +134,13 @@ async function Catalog() {
 const catalogCtl = () => `
     <div class='col-xs-1' style='margin-top:5vw;margin-right:3vw;'>
         <div class='border border-primary rounded'>
-            ${filters()}
-            ${search()}
+            <div class='row'>
+                <div class='col'>${filters()}</div>
+                <div class='col'>${priceRange()}</div>
+            </div>
+            <div class='row'>
+                <div class='col'>${search()}</div>
+            </div>
         </div>
         ${(sessionStorage.getItem('token')) ? adminTools() : ""}
     </div>
@@ -124,7 +162,8 @@ const search = () => `
 const filters = () => {
     const terms = ['test', 'jea', 'stuff'];
 
-    let html = ``;
+
+    let html = `<p>Filters:</p>`;
     for (let t of terms) {
         html += `
             <div class="form-check">
@@ -137,6 +176,25 @@ const filters = () => {
 
     return `<div style='margin:1vw'>${html}</div>`;
     
+}
+
+
+const priceRange = () => {
+    const ranges = ['any', '0-50', '50-100', '100-*'];
+
+
+    let html = `<p>Price Range:</p>`;
+    for (let r of ranges) {
+        html += `
+            <div class="form-check">
+                <input class="form-check-input articlePriceRange" name='price_range' type="radio" value="${r}" id="price_range_${r}" ${(r==='any') ? 'checked' : ''}>
+                <label class="form-check-label" for="price_range_${r}">
+                    ${r}
+                </label>
+            </div>`
+    }
+
+    return `<div style='margin:1vw'>${html}</div>`;
 }
 
 
