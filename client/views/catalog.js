@@ -121,12 +121,13 @@ async function Catalog() {
     
     app.innerHTML = `
     <div class='row no-gutters'>
+        ${catalogCtl()}
         <div class='col'>
             <div id='articles' class='row d-flex justify-content-center'>
                 ${articles.map(Article)}
             </div>
         </div>
-        ${catalogCtl()}
+        
     </div>
     `;
 
@@ -168,7 +169,7 @@ const search = () => `
 
 // Filter Component
 const filters = () => {
-    const terms = ['test', 'jea', 'stuff'];
+    const terms = ['test', 'things', 'stuff'];
 
 
     let html = `<p>Filters:</p>`;
