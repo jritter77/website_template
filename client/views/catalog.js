@@ -32,6 +32,14 @@ async function addArticle() {
 }
 
 
+async function deleteArticle(id) {
+    await post('/website_template/server/deleteRecord.php', JSON.stringify({
+        id: id
+    }));
+
+    Catalog();
+}
+
 // Checks for the current searchTerm in the title and description of given article
 function checkSearchTerm(a) {
     const title = a.title.search(searchTerm) > -1;
@@ -74,7 +82,7 @@ function getPriceRange() {
 
 // Filter function used to filter articles when searching
 function filterArticles(a) {
-    const tags = a.tags;
+    const tags = (a.tags) ? a.tags : "";
     const min = parseInt(activePriceRange[0]);
     const max = (activePriceRange[1] === Infinity) ? Infinity : parseInt(activePriceRange[1]);
     const price = parseInt(a.price);
@@ -124,7 +132,7 @@ async function Catalog() {
         ${catalogCtl()}
         <div class='col'>
             <div id='articles' class='row d-flex justify-content-center'>
-                ${articles.map(Article)}
+                ${articles.map(Article).join('')}
             </div>
         </div>
         
@@ -133,9 +141,17 @@ async function Catalog() {
 
 
     
-
+    // create Modal for newArticle
     Modal('New Article', newArticleModal, addArticle);
-    $('#search').on('submit', handleSearch)
+
+    // Set onSubmit of search form
+    $('#search').on('submit', handleSearch);
+
+    // Set onclick event of all deleteArticleButtons
+    $('.deleteArticleButton').each((i, e) => {
+        e.onclick = () => deleteArticle(e.value);
+    })
+
 }
 
 

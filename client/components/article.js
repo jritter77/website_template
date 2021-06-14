@@ -5,8 +5,15 @@ function Article({id, title, img, description, price, tags}) {
         <h4>${title}</h4>
         <a href="#details-${id}"><img style="width:150px;height:150px;" class='img-thumbnail' src=${img} alt='img not found...'/><a>
         <p>${description}</p>
-            Tags: <b>${tags}</b>
-        <p>$${price}</p>    
+        <p>Tags: <b>${(tags) ? (tags) : ""}</b></p>
+        <div class='row'>
+            <div class='col'>
+                <p>$${price}</p>
+            </div>
+            <div class='col'>
+                <button class='btn btn-danger deleteArticleButton' value='${id}'>X</button>
+            </div>
+        </div>
     </div>
     `);
 }
