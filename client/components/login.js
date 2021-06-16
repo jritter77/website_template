@@ -1,11 +1,17 @@
 import { Admin } from '../views/admin.js';
+import {post} from '../webRequest.js';
 
-function handleSubmission() {
+async function handleSubmission(e) {
+    e.preventDefault();
+
     const user = $('#user').val();
     const pass = $('#pass').val();
 
+    const result = JSON.parse(await post('./server/login.php', JSON.stringify({user: user})));
 
-    if (user === 'admin' && pass === 'root') {
+    console.log('response: ', result.pass);
+
+    if (result.pass === pass){
         sessionStorage.setItem('token', 'token123');
         Admin();
     } else {
