@@ -26,6 +26,7 @@ function post(endpoint, params) {
 
 }
 
+
 function put(endpoint, params) {
 
     return jQuery.ajax({

@@ -10,18 +10,22 @@ let activePriceRange;
 
 
 // Add Article function adds new article to database
-async function addArticle() {
+async function addArticle(e) {
+    e.preventDefault();
+
     const newTitle = $('#newArticleTitle').val();
     const newDesc =  $('#newArticleDesc').val();
     const newPrice = $('#newArticlePrice').val();
-    const newImg = 'https://pbs.twimg.com/profile_images/531994916181012480/EBap51cO_400x400.png';
-    
+    const newImg = './images/' + await handleImgUpload();
+    const newTags = $('#newArticleTags').val();
+
     if (newTitle && newDesc && newPrice) {
         await post('/website_template/server/addRecord.php', JSON.stringify({
             title: newTitle,
             description: newDesc,
             price: newPrice,
-            img: newImg
+            img: newImg,
+            tags: newTags
         }));
 
         Catalog();
@@ -106,7 +110,9 @@ function filterArticles(a) {
 }
 
 // Filters the articles according to all search variables
-function handleSearch() {
+function handleSearch(e) {
+    e.preventDefault();
+
     searchTerm = $('#search').children(':first').val();
     searchTerm = (searchTerm) ? searchTerm : "";
 
@@ -115,6 +121,28 @@ function handleSearch() {
     
     $('#articles').html(articles.filter(filterArticles).map(Article));
     
+}
+
+
+// Passes the img to php to upload to server, returns the name of the file uploaded
+function handleImgUpload() {
+
+    const formData = new FormData(document.getElementById('img_upload'));
+
+    $.ajax({
+        url: 'server/upload.php',
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            alert(data)
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+
+
+    return formData.get('fileToUpload').name;
 }
 
 
@@ -143,6 +171,7 @@ async function Catalog() {
     
     // create Modal for newArticle
     Modal('New Article', newArticleModal, addArticle);
+    $('#img_upload').submit(handleImgUpload);
 
     // Set onSubmit of search form
     $('#search').on('submit', handleSearch);
@@ -247,15 +276,22 @@ const newArticleModal = `
             </div>
             <div class='form-group'>
                 <label for='newArticleDesc'>Description</label>
-                <input type='text' class='form-control' id='newArticleDesc' placeholder='Description of article.'>
+                <textarea class='form-control' id='newArticleDesc' rows='3' placeholder='Description of article.'></textarea>
             </div>
             <div class='form-group'>
                 <label for='newArticlePrice'>Price</label>
                 <input type='text' class='form-control' id='newArticlePrice' placeholder='0.00'>
             </div>
+            <div class='form-group'>
+                <label for='newArticleTags'>Tags</label>
+                <input type='text' class='form-control' id='newArticleTags' placeholder='tag1, tag2, tag3...'>
+            </div>
+        </form>
+        <form id='img_upload'>
+            Select image to upload:
+            <input type='file' name='fileToUpload' id='fileToUpload'>
         </form>  
     `;
-
 
 
 

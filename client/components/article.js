@@ -1,5 +1,18 @@
 function Article({id, title, img, description, price, tags}) {
 
+    const deleteButton = () => {
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            return `
+            <div class='col'>
+                <button class='btn btn-danger deleteArticleButton' value='${id}'>X</button>
+            </div>
+            `
+        }
+        
+        return '';
+    }
+
     return (`
     <div style="margin:2rem;" class='col-sm-6 col-md-3'>
         <h4>${title}</h4>
@@ -10,9 +23,7 @@ function Article({id, title, img, description, price, tags}) {
             <div class='col'>
                 <p>$${price}</p>
             </div>
-            <div class='col'>
-                <button class='btn btn-danger deleteArticleButton' value='${id}'>X</button>
-            </div>
+            ${deleteButton()}
         </div>
     </div>
     `);
