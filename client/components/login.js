@@ -4,15 +4,18 @@ import {post} from '../webRequest.js';
 async function handleSubmission(e) {
     e.preventDefault();
 
+    // get form information
     const user = $('#user').val();
     const pass = $('#pass').val();
 
-    const result = JSON.parse(await post('./server/login.php', JSON.stringify({user: user})));
+    // check credentials against db
+    const result = await post('./server/login.php', JSON.stringify({user: user, pass: pass}));
 
-    console.log('response: ', result.pass);
+    console.log(result);
 
-    if (result.pass === pass){
-        sessionStorage.setItem('token', 'token123');
+    // 
+    if (result){
+        sessionStorage.setItem('token', JSON.stringify(result));
         Admin();
     } else {
         if (!$('.alert').length) {
@@ -22,6 +25,10 @@ async function handleSubmission(e) {
 
     
 }
+
+
+
+
 
 function Login() {
     $('#app').html( `

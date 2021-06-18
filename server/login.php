@@ -1,10 +1,10 @@
 <?php
 
-// Connect to our database 
+// Connect to database 
 $db = new SQLite3('../data/humboldtCrystals.db');
 
 // sqlite3 command to be executed
-$stmt = $db->prepare("SELECT * FROM users WHERE user = :user");
+$stmt = $db->prepare("SELECT pass FROM users WHERE user = :user");
 
 // get req params
 $req = json_decode($_POST['req']);
@@ -17,9 +17,25 @@ $stmt->bindValue(':user', $req->user);
 // Execute the sqlite3 command
 $result = $stmt->execute();
 
+
+// store results in data array
+$data = array();
+while ($res = $result->fetchArray(SQLITE3_ASSOC)) {
+    array_push($data, $res);
+}
+
+
+
+// echo true if credenctials are confirmed, else echo false
+if (password_verify($req->pass, $data[0]['pass'])) {
+    echo true;
+}
+else {
+    echo false;
+}
   
-// Display the value (this is what Javascript will see)
-echo json_encode($result->fetchArray());
+
+
 
 
 ?>
