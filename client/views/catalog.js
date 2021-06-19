@@ -148,9 +148,24 @@ function handleImgUpload() {
 
 // This is the main Page component to be displayed, houses all other components.
 async function Catalog() {
+    
+    // verify session, clear session if false
+    let token = sessionStorage.getItem('token');
+    if (token.session) {
+        const verify = await post('./server/verifySession.php', token);
+        if (verify) {
+            sessionStorage.setItem('token', verify)
+        }
+        else {
+            sessionStorage.clear();
+        }
+    }
+    else {
+        sessionStorage.clear();
+    }
 
     // GET articles from db
-    articles = JSON.parse(await get('/website_template/server/getAllRecords.php'));
+    articles = JSON.parse(await get('./server/getAllRecords.php'));
 
     // WRITE THE HTML TO THE APP CONTAINER  
     const app = document.getElementById('app');

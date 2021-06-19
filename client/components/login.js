@@ -9,13 +9,10 @@ async function handleSubmission(e) {
     const pass = $('#pass').val();
 
     // check credentials against db
-    const result = await post('./server/login.php', JSON.stringify({user: user, pass: pass}));
+    let token = await post('./server/login.php', JSON.stringify({user: user, pass: pass}));
 
-    console.log(result);
-
-    // 
-    if (result){
-        sessionStorage.setItem('token', JSON.stringify(result));
+    if (token){
+        sessionStorage.setItem('token', token);
         Admin();
     } else {
         if (!$('.alert').length) {

@@ -28,11 +28,15 @@ while ($res = $result->fetchArray(SQLITE3_ASSOC)) {
 
 // echo true if credenctials are confirmed, else echo false
 if (password_verify($req->pass, $data[0]['pass'])) {
-    echo true;
+    session_start();
+    $token = array();
+    $_SESSION['user'] = $req->user;
+    $token['user'] = $req->user;
+    $token['session'] = session_id();
+    echo json_encode($token);
 }
-else {
-    echo false;
-}
+
+
   
 
 
