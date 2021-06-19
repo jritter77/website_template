@@ -25,8 +25,7 @@ while ($res = $result->fetchArray(SQLITE3_ASSOC)) {
 }
 
 
-
-// echo true if credenctials are confirmed, else echo false
+// start session and return session id if credentials are verified
 if (password_verify($req->pass, $data[0]['pass'])) {
     session_start();
     $token = array();

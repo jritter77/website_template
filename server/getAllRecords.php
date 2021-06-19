@@ -1,18 +1,17 @@
 <?php
-// Connect to our database (Step 2a)
+// Connect to database
 $db = new SQLite3('../data/humboldtCrystals.db');
 
-// Find the record (Step 2b)
+// Find the record
 $results = $db->query("SELECT * FROM catalog");
 
+// store results in array
 $myArr = array(); 
-
 while ($row = $results->fetchArray()) {
   array_push($myArr, $row);
 }
 
-  
-   // Step 2c: Display the value (this is what Javascript will see)
-   echo json_encode($myArr);
+// echo results array
+echo json_encode($myArr);
 
 ?>

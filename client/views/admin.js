@@ -1,28 +1,11 @@
 import { Login } from "../components/login.js";
-import {post} from "../webRequest.js";
+import { verifySession } from "../sessions.js";
 
 async function Admin() {
     const app = document.getElementById('app');
-    
-    // verify session, clear session if false
-    let token = sessionStorage.getItem('token');
-    if (token.session) {
-        const verify = await post('./server/verifySession.php', token);
-        if (verify) {
-            sessionStorage.setItem('token', verify)
-        }
-        else {
-            sessionStorage.clear();
-            token = null;
-        }
-    }
-    else {
-        sessionStorage.clear();
-        token = null;
-    }
-    
-    
-    if (!token) {
+
+
+    if (!(await verifySession())) {
         Login();
     }
     else {
@@ -69,7 +52,7 @@ async function Admin() {
             </div>
             `;
     }
-    
+
 }
 
-export {Admin}
+export { Admin }

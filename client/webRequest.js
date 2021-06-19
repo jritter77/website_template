@@ -27,20 +27,22 @@ function post(endpoint, params) {
 }
 
 
-function put(endpoint, params) {
-
-    return jQuery.ajax({
-
-        type: "PUT",
-        url: endpoint,
-        data: {
-            req: params
+function uploadImg(formData) {
+    $.ajax({
+        url: './server/upload.php',
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            alert(data)
         },
-        dataType: "html"
+        cache: false,
+        contentType: false,
+        processData: false
+    });
 
-    })
-
+    return formData.get('fileToUpload').name;
 }
 
 
-export {get, post}
+
+export {get, post, uploadImg}

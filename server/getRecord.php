@@ -1,18 +1,23 @@
 <?php
-// Connect to our database (Step 2a)
+// Connect to database 
 $db = new SQLite3('../data/humboldtCrystals.db');
 
-// Find the record (Step 2b)
-$results = $db->query("SELECT * FROM catalog WHERE id = " . intval($_POST["req"]));
+$req = json_decode($_POST['req']);
+
+// sqlite3 command to be executed
+$stmt = $db->prepare("SELECT * FROM catalog WHERE id = :id");
+
+// fill in parameters
+$stmt->bindValue(':id', $req->id);
+
+// Execute the sqlite3 command
+$result = $stmt->execute();
 
 $myArr = array(); 
-
-while ($row = $results->fetchArray()) {
+while ($row = $result->fetchArray()) {
   array_push($myArr, $row);
 }
 
-  
-   // Step 2c: Display the value (this is what Javascript will see)
-   echo json_encode($myArr);
+echo json_encode($myArr);
 
 ?>

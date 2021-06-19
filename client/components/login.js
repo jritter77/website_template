@@ -1,5 +1,5 @@
 import { Admin } from '../views/admin.js';
-import {post} from '../webRequest.js';
+import { startSession } from '../sessions.js';
 
 async function handleSubmission(e) {
     e.preventDefault();
@@ -8,11 +8,9 @@ async function handleSubmission(e) {
     const user = $('#user').val();
     const pass = $('#pass').val();
 
+    
     // check credentials against db
-    let token = await post('./server/login.php', JSON.stringify({user: user, pass: pass}));
-
-    if (token){
-        sessionStorage.setItem('token', token);
+    if (await startSession(user, pass)) {
         Admin();
     } else {
         if (!$('.alert').length) {
@@ -20,15 +18,12 @@ async function handleSubmission(e) {
         }
     }
 
-    
 }
 
 
 
-
-
 function Login() {
-    $('#app').html( `
+    $('#app').html(`
     <div class='row'>
         
         <div class='col' >

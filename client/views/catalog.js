@@ -1,6 +1,10 @@
-import {Article} from "../components/article.js";
-import {Modal} from "../components/modal.js";
-import {get, post} from "../webRequest.js";
+import { Article } from "../components/article.js";
+import { Modal } from "../components/modal.js";
+import { addRecord, deleteRecord, getAllRecords } from "../database.js";
+import { verifySession } from "../sessions.js";
+
+
+/** PAGE VARS */
 
 // Declare all global variables for the page
 let articles;
@@ -9,25 +13,22 @@ let activeFilters;
 let activePriceRange;
 
 
+
+
+/** PAGE FUNCTIONS */
+
 // Add Article function adds new article to database
 async function addArticle(e) {
     e.preventDefault();
 
-    const newTitle = $('#newArticleTitle').val();
-    const newDesc =  $('#newArticleDesc').val();
-    const newPrice = $('#newArticlePrice').val();
-    const newImg = './images/' + await handleImgUpload();
-    const newTags = $('#newArticleTags').val();
+    const title = $('#newArticleTitle').val();
+    const desc = $('#newArticleDesc').val();
+    const price = $('#newArticlePrice').val();
+    const img = new FormData(document.getElementById('img_upload'));
+    const tags = $('#newArticleTags').val();
 
-    if (newTitle && newDesc && newPrice) {
-        await post('/website_template/server/addRecord.php', JSON.stringify({
-            title: newTitle,
-            description: newDesc,
-            price: newPrice,
-            img: newImg,
-            tags: newTags
-        }));
-
+    if (title && desc && price && img) {
+        await addRecord(title, desc, price, img, tags);
         Catalog();
     }
     else {
@@ -36,13 +37,12 @@ async function addArticle(e) {
 }
 
 
+// deletes article from db
 async function deleteArticle(id) {
-    await post('/website_template/server/deleteRecord.php', JSON.stringify({
-        id: id
-    }));
-
+    await deleteRecord(id);
     Catalog();
 }
+
 
 // Checks for the current searchTerm in the title and description of given article
 function checkSearchTerm(a) {
@@ -91,12 +91,12 @@ function filterArticles(a) {
     const max = (activePriceRange[1] === Infinity) ? Infinity : parseInt(activePriceRange[1]);
     const price = parseInt(a.price);
 
-    
+
     if (price >= min && price < max) {
         if (activeFilters.length > 0) {
             for (let af of activeFilters) {
                 if (tags.indexOf(af) > -1) {
-                     return checkSearchTerm(a);
+                    return checkSearchTerm(a);
                 }
             }
         }
@@ -104,8 +104,8 @@ function filterArticles(a) {
             return checkSearchTerm(a);
         }
     }
-    
-    
+
+
     return false;
 }
 
@@ -118,58 +118,29 @@ function handleSearch(e) {
 
     getActiveFilters();
     getPriceRange();
-    
+
     $('#articles').html(articles.filter(filterArticles).map(Article));
-    
+
 }
 
 
-// Passes the img to php to upload to server, returns the name of the file uploaded
-function handleImgUpload() {
-
-    const formData = new FormData(document.getElementById('img_upload'));
-
-    $.ajax({
-        url: 'server/upload.php',
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-            alert(data)
-        },
-        cache: false,
-        contentType: false,
-        processData: false
-    });
 
 
-    return formData.get('fileToUpload').name;
-}
+/** MAIN PAGE **/
 
 
 // This is the main Page component to be displayed, houses all other components.
 async function Catalog() {
-    
-    // verify session, clear session if false
-    let token = sessionStorage.getItem('token');
-    if (token.session) {
-        const verify = await post('./server/verifySession.php', token);
-        if (verify) {
-            sessionStorage.setItem('token', verify)
-        }
-        else {
-            sessionStorage.clear();
-        }
-    }
-    else {
-        sessionStorage.clear();
-    }
+
+    await verifySession();
+
 
     // GET articles from db
-    articles = JSON.parse(await get('./server/getAllRecords.php'));
+    articles = await getAllRecords();
 
     // WRITE THE HTML TO THE APP CONTAINER  
     const app = document.getElementById('app');
-    
+
     app.innerHTML = `
     <div class='row no-gutters'>
         ${catalogCtl()}
@@ -183,10 +154,9 @@ async function Catalog() {
     `;
 
 
-    
+
     // create Modal for newArticle
     Modal('New Article', newArticleModal, addArticle);
-    $('#img_upload').submit(handleImgUpload);
 
     // Set onSubmit of search form
     $('#search').on('submit', handleSearch);
@@ -197,6 +167,14 @@ async function Catalog() {
     })
 
 }
+
+
+
+
+
+
+
+/** COMPONENTS **/
 
 
 // Catalog Control Component
@@ -244,7 +222,7 @@ const filters = () => {
     }
 
     return `<div style='margin:1vw'>${html}</div>`;
-    
+
 }
 
 
@@ -257,7 +235,7 @@ const priceRange = () => {
     for (let r of ranges) {
         html += `
             <div class="form-check">
-                <input class="form-check-input articlePriceRange" name='price_range' type="radio" value="${r}" id="price_range_${r}" ${(r==='any') ? 'checked' : ''}>
+                <input class="form-check-input articlePriceRange" name='price_range' type="radio" value="${r}" id="price_range_${r}" ${(r === 'any') ? 'checked' : ''}>
                 <label class="form-check-label" for="price_range_${r}">
                     ${r}
                 </label>
@@ -311,4 +289,4 @@ const newArticleModal = `
 
 
 
-export {Catalog}
+export { Catalog }
