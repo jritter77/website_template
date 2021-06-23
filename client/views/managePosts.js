@@ -54,6 +54,8 @@ async function refreshPosts() {
 
 
 async function ManagePosts() {
+
+    await verifySession();
     
     // create Modal for newPost
     Modal('New Post', newPostModal, newPost);

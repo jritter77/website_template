@@ -29,10 +29,13 @@ async function addArticle(e) {
 
     if (title && desc && price && img) {
         await addRecord(title, desc, price, img, tags);
-        Catalog();
+        refreshArticles();
+        $('#exampleModal').modal('hide');
+        $('#app').prepend(`<div class='alert alert-success' role='alert'>New Article created successfully!</div>`)
     }
     else {
-        $('#app').prepend(`<div class='alert alert-danger' role='alert'>Unable to add new article...</div>`)
+        $('#newArticleModal').addClass('was-validated');
+        $('#img_upload').addClass('was-validated');
     }
 }
 
@@ -40,7 +43,7 @@ async function addArticle(e) {
 // deletes article from db
 async function deleteArticle(id) {
     await deleteRecord(id);
-    Catalog();
+    refreshArticles();
 }
 
 
@@ -124,6 +127,22 @@ function handleSearch(e) {
 }
 
 
+async function refreshArticles() {
+    articles = await getAllRecords();
+    $('#articles').html(articles.map(Article).join(''));
+
+    // Set onclick event of all deleteArticleButtons
+    $('.deleteArticleButton').each((i, e) => {
+        e.onclick = () => deleteArticle(e.value);
+    })
+}
+
+
+
+function clearModal() {
+    document.getElementById('newArticleModal').reset();
+    document.getElementById('img_upload').reset();
+}
 
 
 /** MAIN PAGE **/
@@ -166,6 +185,8 @@ async function Catalog() {
         e.onclick = () => deleteArticle(e.value);
     })
 
+
+    $('#new_article_btn').click(clearModal);
 }
 
 
@@ -262,27 +283,39 @@ const adminTools = () => {
 
 // Body for New Article Modal component
 const newArticleModal = `
-        <form id='login'>
+        <form id='newArticleModal' class='needs-validation' novalidate>
             <div class='form-group'>
                 <label for='newArticleTitle'>Article Title</label>
-                <input type='text' class='form-control' id='newArticleTitle' placeholder='Title'>
+                <input type='text' class='form-control' id='newArticleTitle' placeholder='Title' required>
+                <div class='invalid-feedback'>
+                    Please enter a title.
+                </div>
             </div>
             <div class='form-group'>
                 <label for='newArticleDesc'>Description</label>
-                <textarea class='form-control' id='newArticleDesc' rows='3' placeholder='Description of article.'></textarea>
+                <textarea class='form-control' id='newArticleDesc' rows='3' placeholder='Description of article.' required></textarea>
+                <div class='invalid-feedback'>
+                    Please enter a description.
+                </div>
             </div>
             <div class='form-group'>
                 <label for='newArticlePrice'>Price</label>
-                <input type='text' class='form-control' id='newArticlePrice' placeholder='0.00'>
+                <input type='text' class='form-control' id='newArticlePrice' placeholder='0.00' required>
+                <div class='invalid-feedback'>
+                    Please enter a price.
+                </div>
             </div>
             <div class='form-group'>
                 <label for='newArticleTags'>Tags</label>
                 <input type='text' class='form-control' id='newArticleTags' placeholder='tag1, tag2, tag3...'>
             </div>
         </form>
-        <form id='img_upload'>
+        <form id='img_upload' class='needs-validation' novalidate>
             Select image to upload:
-            <input type='file' name='fileToUpload' id='fileToUpload'>
+            <input type='file' name='fileToUpload' id='fileToUpload' required>
+            <div class='invalid-feedback'>
+                Please select an image.
+            </div>
         </form>  
     `;
 
