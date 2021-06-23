@@ -1,5 +1,22 @@
 import { Login } from "../components/login.js";
 import { verifySession } from "../sessions.js";
+import { addNewsPost } from "../database.js";
+
+
+
+
+
+
+async function handleAddPost() {
+    const date = new Date();
+    const cur = date.toDateString();
+    await addNewsPost(cur, 'test', 'stuff');
+    console.log('success');
+}
+
+
+
+
 
 async function Admin() {
     const app = document.getElementById('app');
@@ -18,7 +35,7 @@ async function Admin() {
                     <h2 class='text-center'>Content Tools</h2>
                     <ul style='margin:2vw;'>
                         <li><a href='#catalog'>Manage Articles</a></li>
-                        <li><a href='#'>Create News Post</a></li>
+                        <li><a href='#manageposts'>Manage News Post</a></li>
                         <li><a href='#'>Manage Events</a></li>
                     </ul>
                     

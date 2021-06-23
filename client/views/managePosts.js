@@ -1,0 +1,129 @@
+import {getAllPosts, addNewsPost, deleteNewsPost} from '../database.js';
+import { newsPost } from "../components/newsPost.js";
+import { Modal } from "../components/modal.js";
+
+let posts = [];
+
+
+
+async function newPost(e) {
+    e.preventDefault();
+
+    const date = new Date();
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const curDate = `${month}/${day}/${year}`;
+    const title = $('#newPostTitle').val();
+    const desc = $('#newPostDesc').val();
+    
+    console.log(curDate);
+
+    if (title && desc) {
+        await addNewsPost(curDate, title, desc);
+        refreshPosts();
+        $('#exampleModal').modal('hide');
+        $('#app').prepend(`<div class='alert alert-success' role='alert'>New Post created successfully!</div>`)
+    }
+    else {
+        $('#newPostModal').addClass('was-validated');
+    }
+
+}
+
+
+async function deletePost(id) {
+    await deleteNewsPost(id);
+    refreshPosts();
+}
+
+
+async function refreshPosts() {
+    posts = await getAllPosts();
+
+    $('#posts').html(posts.map(newsPost).join(''));
+
+    // Set onclick event of all deletePostButtons
+    $('.deletePostButton').each((i, e) => {
+        e.onclick = () => deletePost(e.value);
+    });
+}
+
+
+
+async function ManagePosts() {
+    
+    // create Modal for newPost
+    Modal('New Post', newPostModal, newPost);
+
+    // create post list
+    await postList();
+    
+}
+
+
+
+
+async function postList() {
+    const app = $('#app');
+
+    posts = await getAllPosts();
+
+    app.append(`
+    <hr>
+    <div class='row no-gutters text-center'>
+        <div class='col'>
+            <button id='newPost' data-toggle='modal' data-target="#exampleModal" class='btn btn-success'>+</button>
+        </div>
+        <div class='col'>
+            <p><u>ID #</u></p>
+        </div>
+        <div class='col'>
+            <p><u>Date</u></p>
+        </div>
+        <div class='col'>
+            <p><u>Title</u></p>
+        </div>
+        <div class='col-4'>
+            <p><u>Description</u></p>
+        </div>
+    </div>
+    <hr>
+    <div id='posts'>
+    ${posts.map(newsPost).join('')}
+    </div>
+    `);
+
+
+    // Set onclick event of all deletePostButtons
+    $('.deletePostButton').each((i, e) => {
+        e.onclick = () => deletePost(e.value);
+    });
+}
+
+
+
+
+
+const newPostModal = `
+    <form id='newPostModal' class='needs-validation' novalidate>
+        <div class='form-group'>
+            <label for='newPostTitle'>Title</label>
+            <input type='text' class='form-control' id='newPostTitle' placeholder='Title' required>
+            <div class='invalid-feedback'>
+                Please enter a title.
+            </div>
+        </div>
+        <div class='form-group'>
+            <label for='newPostDesc'>Description</label>
+            <textarea class='form-control' id='newPostDesc' rows='3' placeholder='Description of Post.' required></textarea>
+            <div class='invalid-feedback'>
+                Please enter a description.
+            </div>
+        </div>
+    </form>
+    `;
+
+export {ManagePosts};

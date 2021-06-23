@@ -5,6 +5,7 @@ import {Contact} from "./views/contact.js";
 import {Details} from "./views/details.js";
 import {Catalog} from "./views/catalog.js";
 import {Admin} from "./views/admin.js";
+import {ManagePosts} from "./views/managePosts.js"
 
 
 
@@ -14,7 +15,8 @@ const pages = {
     contact: Contact,
     details: Details,
     catalog: Catalog,
-    admin: Admin
+    admin: Admin,
+    manageposts: ManagePosts
 }
 
 function getPageFromURL() {
