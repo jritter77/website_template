@@ -1,4 +1,4 @@
-function newsPost({id, date, title, description}) {
+function newsPost({ id, date, title, description }) {
     return `
     <div class='row no-gutters text-center'>
         <div class='col'>
@@ -25,4 +25,4 @@ function newsPost({id, date, title, description}) {
 }
 
 
-export {newsPost}
+export { newsPost }

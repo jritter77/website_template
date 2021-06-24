@@ -6,8 +6,9 @@ import {Details} from "./views/details.js";
 import {Catalog} from "./views/catalog.js";
 import {Admin} from "./views/admin.js";
 import {ManagePosts} from "./views/managePosts.js"
+import {NavBar} from './components/navbar.js';
 
-
+$('#header').html(NavBar());
 
 const pages = {
     home: Home,

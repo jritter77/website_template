@@ -1,6 +1,7 @@
 import {getAllPosts, addNewsPost, deleteNewsPost} from '../database.js';
 import { newsPost } from "../components/newsPost.js";
 import { Modal } from "../components/modal.js";
+import { verifySession } from "../sessions.js";
 
 let posts = [];
 
@@ -54,6 +55,8 @@ async function refreshPosts() {
 
 
 async function ManagePosts() {
+
+    $('#app').html('');
 
     await verifySession();
     
