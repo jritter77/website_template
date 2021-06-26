@@ -8,13 +8,20 @@ let posts = [];
 
 
 function openNewPost() {
+    $('#newPostTitle').val('');
+    $('#newPostDesc').val('');
+
     $('#modalSubmit').off('click');
     $('#modalSubmit').click(newPost);
 }
 
 
-function openEditPost(id) {
-    document.getElementById('modalSubmit').value = id;
+function openEditPost(index) {
+    const p = posts[index]
+    $('#modalSubmit').val(p.id);
+    $('#newPostTitle').val(p.title);
+    $('#newPostDesc').val(p.description);
+
     $('#modalSubmit').off('click');
     $('#modalSubmit').click(editPost);
 }
@@ -77,7 +84,7 @@ async function deletePost(id) {
 async function refreshPosts() {
     posts = await getAllPosts();
 
-    $('#posts').html(posts.map(newsPost).join(''));
+    $('#posts').html(posts.map((e, i) => newsPost(e, i)).join(''));
 
     // Set onclick event of all deletePostButtons
     $('.editPostButton').each((i, e) => {
@@ -135,7 +142,7 @@ async function postList() {
     </div>
     <hr>
     <div id='posts'>
-    ${posts.map(newsPost).join('')}
+    ${posts.map((e, i) => newsPost(e, i)).join('')}
     </div>
     `);
 
