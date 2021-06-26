@@ -4,7 +4,7 @@ function newsPost({ id, date, title, description }) {
         <div class='col'>
             <div class='row no-gutters'>
                 <div class='col' ><button class='btn btn-danger deletePostButton' value='${id}'>X</button></div>
-                <div class='col'><button class='btn btn-primary'>Edit</button></div>
+                <div class='col' data-toggle='modal' data-target="#exampleModal"><button class='btn btn-primary editPostButton' value='${id}'>Edit</button></div>
             </div>
         </div>
         <div class='col'>

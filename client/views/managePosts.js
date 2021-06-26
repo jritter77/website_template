@@ -1,10 +1,23 @@
-import {getAllPosts, addNewsPost, deleteNewsPost} from '../database.js';
+import {getAllPosts, addNewsPost, deleteNewsPost, editNewsPost} from '../database.js';
 import { newsPost } from "../components/newsPost.js";
 import { Modal } from "../components/modal.js";
 import { verifySession } from "../sessions.js";
 
 let posts = [];
 
+
+
+function openNewPost() {
+    $('#modalSubmit').off('click');
+    $('#modalSubmit').click(newPost);
+}
+
+
+function openEditPost(id) {
+    document.getElementById('modalSubmit').value = id;
+    $('#modalSubmit').off('click');
+    $('#modalSubmit').click(editPost);
+}
 
 
 async function newPost(e) {
@@ -20,18 +33,38 @@ async function newPost(e) {
     const title = $('#newPostTitle').val();
     const desc = $('#newPostDesc').val();
     
-    console.log(curDate);
 
     if (title && desc) {
         await addNewsPost(curDate, title, desc);
         refreshPosts();
         $('#exampleModal').modal('hide');
-        $('#app').prepend(`<div class='alert alert-success' role='alert'>New Post created successfully!</div>`)
     }
     else {
         $('#newPostModal').addClass('was-validated');
     }
 
+}
+
+
+
+
+
+async function editPost(e) {
+    e.preventDefault();
+
+    const id = this.value;
+    const title = $('#newPostTitle').val();
+    const desc = $('#newPostDesc').val();
+    
+
+    if (title && desc) {
+        await editNewsPost(id, title, desc);
+        refreshPosts();
+        $('#exampleModal').modal('hide');
+    }
+    else {
+        $('#newPostModal').addClass('was-validated');
+    }
 }
 
 
@@ -45,6 +78,11 @@ async function refreshPosts() {
     posts = await getAllPosts();
 
     $('#posts').html(posts.map(newsPost).join(''));
+
+    // Set onclick event of all deletePostButtons
+    $('.editPostButton').each((i, e) => {
+        e.onclick = () => openEditPost(e.value);
+    });
 
     // Set onclick event of all deletePostButtons
     $('.deletePostButton').each((i, e) => {
@@ -101,6 +139,12 @@ async function postList() {
     </div>
     `);
 
+    $('#newPost').click(openNewPost);
+
+    // Set onclick event of all deletePostButtons
+    $('.editPostButton').each((i, e) => {
+        e.onclick = () => openEditPost(e.value);
+    });
 
     // Set onclick event of all deletePostButtons
     $('.deletePostButton').each((i, e) => {

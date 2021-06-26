@@ -86,7 +86,7 @@ const post = ({id, title, description}, index) => {
         data-target="#exampleModal"
         style='cursor: pointer; padding: 1em;'
         >
-            <p style='color:blue'>#${id}-${title}</p> ${description}
+            <p style='color:blue'>#${id} - ${title}</p> ${description}
         </div>`;
 }
 

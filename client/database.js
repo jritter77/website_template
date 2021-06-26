@@ -74,6 +74,23 @@ async function addNewsPost(date, title, desc) {
 }
 
 
+async function editNewsPost(id, title, desc) {
+
+    try {
+        await post('./server/editPost.php', JSON.stringify({
+            id: id,
+            title: title,
+            description: desc
+        }));
+    }
+    catch (err) {
+        console.log(err);
+    }
+    
+
+}
+
+
 
 async function deleteNewsPost(id) {
     try {
@@ -93,4 +110,4 @@ async function deleteNewsPost(id) {
 
 
 
-export {addRecord, deleteRecord, getAllRecords, getAllPosts, addNewsPost, deleteNewsPost};
+export {addRecord, deleteRecord, getAllRecords, getAllPosts, addNewsPost, deleteNewsPost, editNewsPost};
