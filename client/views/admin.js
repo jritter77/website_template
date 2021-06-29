@@ -45,7 +45,7 @@ const ContentTools = () => `
         <ul style='margin:2vw;'>
             <li><a href='#catalog'>Manage Articles</a></li>
             <li><a href='#manageposts'>Manage News Post</a></li>
-            <li><a href='#'>Manage Events</a></li>
+            <li><a href='#manageevents'>Manage Events</a></li>
         </ul>
         
     </div>

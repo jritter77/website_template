@@ -108,6 +108,72 @@ async function deleteNewsPost(id) {
 
 
 
+async function getAllEvents() {
+    try {
+        return JSON.parse(await get('./server/getAllEvents.php'));
+    }
+    catch {
+        console.log(err);
+    }
+}
 
 
-export {addRecord, deleteRecord, getAllRecords, getAllPosts, addNewsPost, deleteNewsPost, editNewsPost};
+
+async function addEvent(title, month, day, year, desc) {
+
+    try {
+        await post('./server/addEvent.php', JSON.stringify({
+            title: title,
+            month: month,
+            day: day,
+            year: year,
+            description: desc
+        }));
+    }
+    catch (err) {
+        console.log(err);
+    }
+    
+
+}
+
+
+async function editEvent(id, title, desc) {
+
+    try {
+        await post('./server/editEvent.php', JSON.stringify({
+            id: id,
+            title: title,
+            description: desc
+        }));
+    }
+    catch (err) {
+        console.log(err);
+    }
+    
+
+}
+
+
+
+async function deleteEvent(id) {
+    try {
+        return await post('./server/deleteEvent.php', JSON.stringify({
+            id: id
+        }));
+
+    }
+    catch (err) {
+        console.log(err);
+    }
+
+    
+}
+
+
+
+
+
+export {addRecord, deleteRecord, getAllRecords, 
+        getAllPosts, addNewsPost, deleteNewsPost, editNewsPost,
+        getAllEvents, addEvent, deleteEvent, editEvent};

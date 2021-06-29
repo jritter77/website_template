@@ -5,7 +5,8 @@ import {Contact} from "./views/contact.js";
 import {Details} from "./views/details.js";
 import {Catalog} from "./views/catalog.js";
 import {Admin} from "./views/admin.js";
-import {ManagePosts} from "./views/managePosts.js"
+import {ManagePosts} from "./views/managePosts.js";
+import {ManageEvents} from "./views/manageEvents.js";
 import {NavBar} from './components/navbar.js';
 
 $('#header').html(NavBar());
@@ -17,7 +18,8 @@ const pages = {
     details: Details,
     catalog: Catalog,
     admin: Admin,
-    manageposts: ManagePosts
+    manageposts: ManagePosts,
+    manageevents: ManageEvents
 }
 
 function getPageFromURL() {

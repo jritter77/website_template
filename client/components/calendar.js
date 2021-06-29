@@ -1,3 +1,5 @@
+import {getAllEvents} from '../database.js';
+
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const dCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -9,34 +11,49 @@ const c_date = d.getDate();
 const c_day = d.getDay();
 
 
-const testEvents = [{name: 'event1', year: 2021, month: 5, date: 21}, {name: 'event_2', year: 2021, month: 6, date: 15}];
+let eventList = [];
 
+
+function setEventList(events) {
+    eventList = events;
+}
 
 
 // Sets all events for the current calendar
-function setEvents(events) {
-    let curMonth = months.indexOf($('#month').html());
+function setEvents() {
+    let curMonth = months.indexOf($('#month').html()) + 1;
     let curYear = parseInt($('#year').html());
 
 
-    events = events.filter(e => (e.month === curMonth && e.year === curYear));
+    const events = eventList.filter(e => (e.month === curMonth && e.year === curYear));
 
-    for (let ev of events) {
+    $('.day').each((i, el) => {
+        let day = parseInt(el.innerHTML);
+        el.innerHTML = day;
+    })
+
+    for (let [index, ev] of events.entries()) {
 
         // set the current event
         $('.day').each(function(i, el) {
-            let date = parseInt(el.innerHTML);
+            let day = parseInt(el.innerHTML);
             
-            if (ev.date === date) {
+            if (ev.day === day) {
                 let p = document.createElement("p");
-                p.innerHTML = ev.name;
+                p.innerHTML = ev.title;
                 p.style.fontSize = '.8em';
+                p.class = 'calendarEvent';
+                p.id= index;
                 el.append(p);
                 return false;
             }
-        }) 
+           
+        })
     }
 }
+
+
+
 
 
 // returns the date of the top left square for any given date and day
@@ -74,6 +91,7 @@ function printDays(i, month) {
 
     if (i < 1) {
         return `<b 
+                id='${dCount[((month-1 < 0) ? 11 : month-1)] + i}'
                 class='day text-muted'
                 style="background-color: ${((dCount[prevMonth] + i) === c_date && prevMonth === c_month && year === c_year) ? 'aqua' : ''}"
                 >
@@ -82,6 +100,7 @@ function printDays(i, month) {
     }
     else if (i > dCount[month]) {
         return `<b 
+                id='${i - dCount[month]}'
                 class='day text-muted'
                 style="background-color: ${((i - dCount[month]) === c_date && nextMonth === c_month && year === c_year) ? 'aqua' : ''}"
                 >
@@ -90,6 +109,7 @@ function printDays(i, month) {
     }
     else {
         return `<b 
+                id='${i}'
                 class='day'
                 style="background-color: ${(i === c_date && month === c_month && year === c_year) ? 'aqua' : ''}"
                 >
@@ -130,13 +150,14 @@ function getCurrentMonth() {
 
 
     $('#month').html(months[c_month]);
+    $('#month').val(c_month + 1);
 
     $('.dayContainer').each(function(i, e) {
         e.innerHTML = printDays(start, c_month);
         start++;
     })
 
-    setEvents(testEvents);
+    setEvents();
 }
 
 
@@ -156,17 +177,17 @@ function getNextMonth() {
     
     let start = getStartDate(date, 0);
 
-    console.log(month, date, start);
 
 
     $('#month').html(months[month]);
+    $('#month').val(month + 1);
 
     $('.dayContainer').each(function(i, e) {
         e.innerHTML = printDays(start, month);
         start++;
     })
 
-    setEvents(testEvents);
+    setEvents();
 
 }
 
@@ -190,17 +211,17 @@ function getPrevMonth() {
     
     let start = getStartDate(date, 6);
 
-    console.log(month, date, start);
 
 
     $('#month').html(months[month]);
+    $('#month').val(month + 1);
 
     $('.dayContainer').each(function(i, e) {
         e.innerHTML = printDays(start, month);
         start++;
     })
     
-    setEvents(testEvents);
+    setEvents();
     
 }
 
@@ -241,7 +262,8 @@ function Calendar(par) {
 
     $('#prevMonth').click(getPrevMonth);
     $('#nextMonth').click(getNextMonth);
+
 }
 
 
-export { Calendar }
+export { Calendar, setEventList, setEvents }
