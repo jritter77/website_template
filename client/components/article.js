@@ -1,5 +1,6 @@
 function Article({id, title, img, description, price, tags}) {
 
+    // Delete button component
     const deleteButton = () => {
         const token = sessionStorage.getItem('token');
         if (token) {
@@ -13,6 +14,8 @@ function Article({id, title, img, description, price, tags}) {
         return '';
     }
 
+
+    // Return the HTML of the Article component
     return (`
     <div style="margin:2rem;" class='col-sm-6 col-md-3'>
         <h4>${title}</h4>
@@ -29,16 +32,6 @@ function Article({id, title, img, description, price, tags}) {
     `);
 }
 
-function Article_large({id, title, img, description, price}) {
-    
-    return (`
-    <div style="margin:2rem;" class='col'>
-        <h1>${title}</h1>
-        <a href="#details-${id}"><img id="img" style="width:300px;height:300px;" class='img-thumbnail' src=${img} alt='img not found...'/><a>
-        <p>${description}</p>
-        <p>${price}</p>    
-    </div>
-    `);
-}
+
 
 export {Article}

@@ -13,24 +13,31 @@ const c_day = d.getDay();
 let events = [];
 
 
+// returns the event of the given index
 function getEventDetail(index) {
     return events[index];
 }
 
+
+
 // Sets all events for the current calendar
 async function setEvents() {
+    
+    // Get current month and year of calendar
     let curMonth = months.indexOf($('#month').html()) + 1;
     let curYear = parseInt($('#year').html());
 
-
+    // fetch events for the current month
     events = await getMonthEvents(curMonth, curYear);
 
 
+    // Clear any previously drawn events
     $('.day').each((i, el) => {
         let day = parseInt(el.innerHTML);
         el.innerHTML = day;
     })
 
+    // Loop through events drawing them at the corrrect position
     for (let [index, ev] of events.entries()) {
 
         // set the current event
@@ -69,6 +76,7 @@ function getStartDate(date, day) {
 }
 
 
+// checks if the current year is a leapyeear
 function checkLeapYear(year) {
     if (!(year % 4)) {
         dCount[1] = 29;
@@ -85,7 +93,6 @@ function printDays(i, month) {
     const nextMonth = (month+1 > 11) ? 0 : month+1;
     const year = parseInt($('#year').html());
 
-    
     checkLeapYear();
 
     if (i < 1) {

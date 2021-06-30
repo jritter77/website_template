@@ -95,7 +95,7 @@ async function deleteCalendarEvent(id) {
 
 async function ManageEvents() {
 
-    $('#app').html('<div class="row" id="calendar"></div>');
+    $('#app').html('<div class="row text-center" id="calendar" style="margin: 10vw;margin-top: 1vw"></div>');
 
     await verifySession();
 
