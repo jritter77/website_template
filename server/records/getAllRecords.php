@@ -1,6 +1,6 @@
 <?php
 // Connect to database
-$db = new SQLite3('../data/humboldtCrystals.db');
+$db = new SQLite3('../../data/humboldtCrystals.db');
 
 // Find the record
 $results = $db->query("SELECT * FROM catalog");

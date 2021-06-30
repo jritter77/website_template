@@ -1,9 +1,9 @@
 <?php
 // Connect to database
-$db = new SQLite3('../data/humboldtCrystals.db');
+$db = new SQLite3('../../data/humboldtCrystals.db');
 
 // get all posts
-$results = $db->query("SELECT * FROM events");
+$results = $db->query("SELECT * FROM posts");
 
 // store results in array
 $myArr = array(); 

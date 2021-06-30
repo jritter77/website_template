@@ -1,24 +1,25 @@
-import { getAllEvents, addEvent, deleteEvent, editEvent } from '../database.js';
-import { Calendar, setEventList, setEvents } from '../components/calendar.js';
+import { addEvent, deleteEvent, editEvent } from '../database.js';
+import { Calendar, setEvents, getEventDetail } from '../components/calendar.js';
 import { Modal } from "../components/modal.js";
 import { verifySession } from "../sessions.js";
 
-let events = [];
+
 
 
 
 function openNewCalendarEvent() {
     if (this.children[0].children.length > 0) {
-        const e = this.children[0].children[0].id;
-        $('#newCalendarEventTitle').val(events[e].title);
-        $('#newCalendarEventDesc').val(events[e].description);
+        const i = this.children[0].children[0].id;
+        const e = getEventDetail(i);
+        $('#newCalendarEventTitle').val(e.title);
+        $('#newCalendarEventDesc').val(e.description);
 
-        $('#modalSubmit').val(events[e].id);
+        $('#modalSubmit').val(e.id);
 
         $('#modalSubmit').off('click');
         $('#modalSubmit').click(editCalendarEvent);
         $('#deleteEventButton').off('click');
-        $('#deleteEventButton').click(() => deleteCalendarEvent(events[e].id));
+        $('#deleteEventButton').click(() => deleteCalendarEvent(e.id));
     }   
     else {
         $('#newCalendarEventTitle').val('');
@@ -49,7 +50,7 @@ async function newCalendarEvent(e) {
 
     if (title && desc) {
         await addEvent(title, month, day, year, desc);
-        refreshEvents();
+        setEvents();
         $('#exampleModal').modal('hide');
     }
     else {
@@ -72,7 +73,7 @@ async function editCalendarEvent(e) {
 
     if (title && desc) {
         await editEvent(id, title, desc);
-        refreshEvents();
+        setEvents();
         $('#exampleModal').modal('hide');
     }
     else {
@@ -83,22 +84,16 @@ async function editCalendarEvent(e) {
 
 async function deleteCalendarEvent(id) {
     await deleteEvent(id);
-    refreshEvents();
+    setEvents();
     $('#exampleModal').modal('hide');
 }
 
 
-async function refreshEvents() {
-    events = await getAllEvents();
-    setEventList(events);
-    setEvents();
-}
+
 
 
 
 async function ManageEvents() {
-
-    events = await getAllEvents();
 
     $('#app').html('<div class="row" id="calendar"></div>');
 
@@ -115,7 +110,6 @@ async function ManageEvents() {
 
 
 async function eventCalendar() {
-    setEventList(events);
     Calendar('calendar');
     $('.dayContainer').attr('data-toggle', 'modal');
     $('.dayContainer').attr('data-target', '#exampleModal');

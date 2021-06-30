@@ -1,7 +1,7 @@
 <?php
 
 // Connect to database 
-$db = new SQLite3('../data/humboldtCrystals.db');
+$db = new SQLite3('../../data/humboldtCrystals.db');
 
 // get request object that hold req parameters
 $req = json_decode($_POST['req']);

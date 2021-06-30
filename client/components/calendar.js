@@ -1,4 +1,4 @@
-import {getAllEvents} from '../database.js';
+import {getMonthEvents} from '../database.js';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const dCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -10,22 +10,21 @@ const c_month = d.getMonth();
 const c_date = d.getDate();
 const c_day = d.getDay();
 
+let events = [];
 
-let eventList = [];
 
-
-function setEventList(events) {
-    eventList = events;
+function getEventDetail(index) {
+    return events[index];
 }
 
-
 // Sets all events for the current calendar
-function setEvents() {
+async function setEvents() {
     let curMonth = months.indexOf($('#month').html()) + 1;
     let curYear = parseInt($('#year').html());
 
 
-    const events = eventList.filter(e => (e.month === curMonth && e.year === curYear));
+    events = await getMonthEvents(curMonth, curYear);
+
 
     $('.day').each((i, el) => {
         let day = parseInt(el.innerHTML);
@@ -42,7 +41,6 @@ function setEvents() {
                 let p = document.createElement("p");
                 p.innerHTML = ev.title;
                 p.style.fontSize = '.8em';
-                p.style.cursor = 'pointer';
                 p.className = 'calendarEvent';
                 p.id= index;
                 el.append(p);
@@ -267,4 +265,4 @@ function Calendar(par) {
 }
 
 
-export { Calendar, setEventList, setEvents }
+export { Calendar, getEventDetail, setEvents }

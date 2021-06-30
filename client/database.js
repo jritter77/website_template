@@ -3,9 +3,9 @@ import {get, post, uploadImg} from './webRequest.js';
 
 async function getAllRecords() {
     try {
-        return JSON.parse(await get('./server/getAllRecords.php'));
+        return JSON.parse(await get('./server/records/getAllRecords.php'));
     }
-    catch {
+    catch (err) {
         console.log(err);
     }
 }
@@ -16,7 +16,7 @@ async function addRecord(title, desc, price, img, tags) {
 
     try {
         const imgPath = './images/' + await uploadImg(img);
-        await post('./server/addRecord.php', JSON.stringify({
+        await post('./server/records/addRecord.php', JSON.stringify({
             title: title,
             description: desc,
             price: price,
@@ -34,7 +34,7 @@ async function addRecord(title, desc, price, img, tags) {
 
 async function deleteRecord(id) {
     try {
-        await post('./server/deleteRecord.php', JSON.stringify({
+        await post('./server/records/deleteRecord.php', JSON.stringify({
             id: id
         }));
     }
@@ -48,9 +48,9 @@ async function deleteRecord(id) {
 
 async function getAllPosts() {
     try {
-        return JSON.parse(await get('./server/getAllPosts.php'));
+        return JSON.parse(await get('./server/posts/getAllPosts.php'));
     }
-    catch {
+    catch (err) {
         console.log(err);
     }
 }
@@ -60,7 +60,7 @@ async function getAllPosts() {
 async function addNewsPost(date, title, desc) {
 
     try {
-        await post('./server/addPost.php', JSON.stringify({
+        await post('./server/posts/addPost.php', JSON.stringify({
             date: date,
             title: title,
             description: desc
@@ -77,7 +77,7 @@ async function addNewsPost(date, title, desc) {
 async function editNewsPost(id, title, desc) {
 
     try {
-        await post('./server/editPost.php', JSON.stringify({
+        await post('./server/posts/editPost.php', JSON.stringify({
             id: id,
             title: title,
             description: desc
@@ -94,7 +94,7 @@ async function editNewsPost(id, title, desc) {
 
 async function deleteNewsPost(id) {
     try {
-        return await post('./server/deletePost.php', JSON.stringify({
+        return await post('./server/posts/deletePost.php', JSON.stringify({
             id: id
         }));
 
@@ -110,9 +110,23 @@ async function deleteNewsPost(id) {
 
 async function getAllEvents() {
     try {
-        return JSON.parse(await get('./server/getAllEvents.php'));
+        return JSON.parse(await get('./server/events/getAllEvents.php'));
     }
-    catch {
+    catch (err) {
+        console.log(err);
+    }
+}
+
+
+
+async function getMonthEvents(month, year) {
+    try {
+        return  JSON.parse(await post('./server/events/getMonthEvents.php', JSON.stringify({
+            month: month,
+            year: year
+        })));
+    }
+    catch (err) {
         console.log(err);
     }
 }
@@ -122,7 +136,7 @@ async function getAllEvents() {
 async function addEvent(title, month, day, year, desc) {
 
     try {
-        await post('./server/addEvent.php', JSON.stringify({
+        await post('./server/events/addEvent.php', JSON.stringify({
             title: title,
             month: month,
             day: day,
@@ -141,7 +155,7 @@ async function addEvent(title, month, day, year, desc) {
 async function editEvent(id, title, desc) {
 
     try {
-        await post('./server/editEvent.php', JSON.stringify({
+        await post('./server/events/editEvent.php', JSON.stringify({
             id: id,
             title: title,
             description: desc
@@ -158,7 +172,7 @@ async function editEvent(id, title, desc) {
 
 async function deleteEvent(id) {
     try {
-        return await post('./server/deleteEvent.php', JSON.stringify({
+        return await post('./server/events/deleteEvent.php', JSON.stringify({
             id: id
         }));
 
@@ -176,4 +190,4 @@ async function deleteEvent(id) {
 
 export {addRecord, deleteRecord, getAllRecords, 
         getAllPosts, addNewsPost, deleteNewsPost, editNewsPost,
-        getAllEvents, addEvent, deleteEvent, editEvent};
+        getAllEvents, getMonthEvents, addEvent, deleteEvent, editEvent};

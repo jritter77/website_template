@@ -1,20 +1,19 @@
 import { Carousel } from "../components/carousel.js";
-import { Calendar, setEventList, setEvents } from "../components/calendar.js";
-import {getAllEvents, getAllPosts} from '../database.js';
+import { Calendar, getEventDetail } from "../components/calendar.js";
+import { getAllPosts} from '../database.js';
 import { Modal } from '../components/modal.js';
 
 
 
 let posts = [];
-let events = [];
 
 
 function displayEvent(el) {
     if (el.children[0].children.length) {
-        let id = el.children[0].children[0].id;
-        let ev = events[id];
-        $('.modal-title').html(ev.title);
-        $('.modal-body').html(`<p>${ev.description}</p>`)
+        let index = el.children[0].children[0].id;
+        let e = getEventDetail(index);
+        $('.modal-title').html(e.title);
+        $('.modal-body').html(`<p>${e.description}</p>`)
         $('#exampleModal').modal('toggle');
     }
 }
@@ -33,7 +32,6 @@ async function Home() {
     const app = document.getElementById('app');
 
     posts = await getAllPosts();
-    events = await getAllEvents();
 
     posts.reverse();
 
@@ -72,7 +70,7 @@ async function Home() {
     
     `;
 
-    setEventList(events);
+    
     Calendar('calendarAndNews');
 
 

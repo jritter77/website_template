@@ -1,6 +1,6 @@
 <?php
 // Connect to database 
-$db = new SQLite3('../data/humboldtCrystals.db');
+$db = new SQLite3('../../data/humboldtCrystals.db');
 
 $req = json_decode($_POST['req']);
 

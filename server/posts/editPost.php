@@ -1,10 +1,10 @@
 <?php
 
 // Connect to database 
-$db = new SQLite3('../data/humboldtCrystals.db');
+$db = new SQLite3('../../data/humboldtCrystals.db');
 
 // sqlite3 command to be executed
-$stmt = $db->prepare("UPDATE events 
+$stmt = $db->prepare("UPDATE posts 
     SET 
         title = :title,
         description = :description
