@@ -1,30 +1,44 @@
 import { Carousel } from "../components/carousel.js";
-import { Calendar } from "../components/calendar.js";
-import {getAllPosts} from '../database.js';
+import { Calendar, setEventList, setEvents } from "../components/calendar.js";
+import {getAllEvents, getAllPosts} from '../database.js';
 import { Modal } from '../components/modal.js';
 
 
 
+let posts = [];
+let events = [];
 
 
+function displayEvent(el) {
+    if (el.children[0].children.length) {
+        let id = el.children[0].children[0].id;
+        let ev = events[id];
+        $('.modal-title').html(ev.title);
+        $('.modal-body').html(`<p>${ev.description}</p>`)
+        $('#exampleModal').modal('toggle');
+    }
+}
+
+
+
+function displayPost() {
+    const p = posts[this.id];
+    $('.modal-title').html(p.title);
+    $('.modal-body').html(`<p>${p.description}</p>`);
+}
 
 
 
 async function Home() {
     const app = document.getElementById('app');
 
-    const posts = await getAllPosts();
+    posts = await getAllPosts();
+    events = await getAllEvents();
 
     posts.reverse();
 
 
-    function displayPost() {
-        const p = posts[this.id];
-        $('.modal-body').html(`
-            <h4>${p.title}</h4>
-            <p>${p.description}</p>
-        `);
-    }
+    
 
 
     
@@ -58,12 +72,17 @@ async function Home() {
     
     `;
 
-
+    setEventList(events);
     Calendar('calendarAndNews');
+
 
     $('.newspost').click(displayPost);
 
     Modal('News Post', '', null);
+
+    $('.dayContainer').each((i, el) => {
+        el.onclick = () => displayEvent(el);
+    })
 
 }
 

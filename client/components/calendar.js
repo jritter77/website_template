@@ -35,14 +35,15 @@ function setEvents() {
     for (let [index, ev] of events.entries()) {
 
         // set the current event
-        $('.day').each(function(i, el) {
+        $('.day').not('.text-muted').each(function(i, el) {
             let day = parseInt(el.innerHTML);
             
             if (ev.day === day) {
                 let p = document.createElement("p");
                 p.innerHTML = ev.title;
                 p.style.fontSize = '.8em';
-                p.class = 'calendarEvent';
+                p.style.cursor = 'pointer';
+                p.className = 'calendarEvent';
                 p.id= index;
                 el.append(p);
                 return false;
