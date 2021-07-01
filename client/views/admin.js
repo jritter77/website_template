@@ -1,4 +1,5 @@
 import { Login } from "../components/login.js";
+import { ChangePassword } from "../components/changePassword.js";
 import { verifySession } from "../sessions.js";
 import { NavBar } from '../components/navbar.js';
 
@@ -30,6 +31,7 @@ async function Admin() {
     }
 
     $('#logout').click(logout);
+    $('#changePassword').click(ChangePassword);
 }
 
 
@@ -59,7 +61,7 @@ const SiteManagement = () => `
     >
         <h2 class='text-center'>Site Management</h2>
         <ul style='margin:2vw;'>
-            <li><a href='#'>Change Password</a></li>
+            <li><a id='changePassword' href='#admin'>Change Password</a></li>
             <li><a id='logout' href='#home'>Logout</a></li>
             <li><a href='#'>Testing</a></li>
         </ul>
