@@ -71,7 +71,6 @@ function getStartDate(date, day) {
             result -= 7;
         }
     }
-    
     return result;
 }
 
@@ -164,6 +163,8 @@ function getCurrentMonth() {
     })
 
     setEvents();
+    highlightDays();
+
 }
 
 
@@ -171,7 +172,7 @@ function getCurrentMonth() {
 // Changes all dates to reflect the next month
 function getNextMonth() {
     let month = months.indexOf($('#month').html()) + 1;
-    let date = $('.day:last').html();
+    let date = parseInt($('.day:last').html());
     
     if (month > 11) {
         month = 0;
@@ -194,6 +195,7 @@ function getNextMonth() {
     })
 
     setEvents();
+    highlightDays();
 
 }
 
@@ -201,7 +203,7 @@ function getNextMonth() {
 // Changes all dates to reflect the previous month
 function getPrevMonth() {
     let month = months.indexOf($('#month').html()) - 1;
-    let date = $('.day:first').html();
+    let date = parseInt($('.day:first').html());
     
 
     if (month < 0) {
@@ -209,11 +211,11 @@ function getPrevMonth() {
         $('#year').html(parseInt($('#year').html()) - 1);
     }
 
-
     date--;
     if (date < 1) {
         date = dCount[month];
     }
+    
     
     let start = getStartDate(date, 6);
 
@@ -228,9 +230,23 @@ function getPrevMonth() {
     })
     
     setEvents();
-    
+    highlightDays();
+
 }
 
+
+
+function highlightDays() {
+    $('.dayContainer').each((i, e) => {
+        e.onmouseout = () => {e.style.borderColor="white"};
+        if (!e.children[0].classList.contains('text-muted')) {
+            e.onmouseover = () => {e.style.borderColor="cyan"};
+        }
+        else {
+            e.onmouseover = () => {e.style.borderColor="white"};
+        } 
+    })
+}
 
 
 // Sets the innerHTML of the par element
@@ -268,6 +284,7 @@ function Calendar(par) {
 
     $('#prevMonth').click(getPrevMonth);
     $('#nextMonth').click(getNextMonth);
+
 
 }
 

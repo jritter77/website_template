@@ -9,13 +9,20 @@ let posts = [];
 
 
 function displayEvent(el) {
-    if (el.children[0].children.length) {
-        let index = el.children[0].children[0].id;
-        let e = getEventDetail(index);
-        $('.modal-title').html(e.title);
-        $('.modal-body').html(`<p>${e.description}</p>`)
-        $('#exampleModal').modal('toggle');
+    const day = el.children[0];
+    if (!day.classList.contains('text-muted')) {
+        if (day.children.length) {
+            let index = day.children[0].id;
+            let e = getEventDetail(index);
+            $('.modal-title').html(e.title);
+            $('.modal-body').html(`<p>${e.description}</p>`)
+            $('#exampleModal').modal('toggle');
+        }
+        else {
+            alert('No events for selected day.');
+        }
     }
+    
 }
 
 

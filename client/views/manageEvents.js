@@ -8,28 +8,34 @@ import { verifySession } from "../sessions.js";
 
 
 function openNewCalendarEvent() {
-    if (this.children[0].children.length > 0) {
-        const i = this.children[0].children[0].id;
-        const e = getEventDetail(i);
-        $('#newCalendarEventTitle').val(e.title);
-        $('#newCalendarEventDesc').val(e.description);
+    const day = this.children[0];
 
-        $('#modalSubmit').val(e.id);
+    if (!day.classList.contains('text-muted')) {
+        $('#exampleModal').modal('toggle');
 
-        $('#modalSubmit').off('click');
-        $('#modalSubmit').click(editCalendarEvent);
-        $('#deleteEventButton').off('click');
-        $('#deleteEventButton').click(() => deleteCalendarEvent(e.id));
-    }   
-    else {
-        $('#newCalendarEventTitle').val('');
-        $('#newCalendarEventDesc').val('');
-
-        $('#modalSubmit').val(this.children[0].id);
+        if (day.children.length > 0) {
+            const i = day.children[0].id;
+            const e = getEventDetail(i);
+            $('#newCalendarEventTitle').val(e.title);
+            $('#newCalendarEventDesc').val(e.description);
     
-        $('#modalSubmit').off('click');
-        $('#modalSubmit').click(newCalendarEvent);
-        $('#deleteEventButton').off('click');
+            $('#modalSubmit').val(e.id);
+    
+            $('#modalSubmit').off('click');
+            $('#modalSubmit').click(editCalendarEvent);
+            $('#deleteEventButton').off('click');
+            $('#deleteEventButton').click(() => deleteCalendarEvent(e.id));
+        }   
+        else {
+            $('#newCalendarEventTitle').val('');
+            $('#newCalendarEventDesc').val('');
+    
+            $('#modalSubmit').val(day.id);
+        
+            $('#modalSubmit').off('click');
+            $('#modalSubmit').click(newCalendarEvent);
+            $('#deleteEventButton').off('click');
+        }
     }
     
 }
@@ -89,7 +95,11 @@ async function deleteCalendarEvent(id) {
 }
 
 
-
+function eventCalendar() {
+    Calendar('calendar');
+    $('.dayContainer').click(openNewCalendarEvent);
+    $('.modal-footer').prepend('<button id="deleteEventButton" class="btn btn-danger">Delete</button>');
+}
 
 
 
@@ -108,14 +118,6 @@ async function ManageEvents() {
 
 
 
-
-async function eventCalendar() {
-    Calendar('calendar');
-    $('.dayContainer').attr('data-toggle', 'modal');
-    $('.dayContainer').attr('data-target', '#exampleModal');
-    $('.dayContainer').click(openNewCalendarEvent);
-    $('.modal-footer').prepend('<button id="deleteEventButton" class="btn btn-danger">Delete</button>');
-}
 
 
 
