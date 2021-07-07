@@ -1,4 +1,4 @@
-import { post } from "./webRequest";
+import { post } from "./webRequest.js";
 
 
 async function changePassword(newPass) {
